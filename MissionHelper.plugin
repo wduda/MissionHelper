@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<Plugin>
+    <Information>
+        <Name>MissionHelper</Name>
+        <Author>Hyoss</Author>
+        <Version>v0.0.1</Version>
+        <Description>
+        This plugin creates a single window that contains all the available travel skills, including the race, class and reputation skills.
+It is a further development of Travel Window, that has been worked on by multiple authors before.
+
+Please report bugs and feature requests at Lotrointeface or GitHub.
+        </Description>
+        <Image>MissionHelper/src/resources/travel.tga</Image>
+    </Information>
+    <Package>MissionHelper.src.Main</Package>
+    <Configuration Apartment="MissionHelper">
+    </Configuration>
+</Plugin>
