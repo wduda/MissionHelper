@@ -5,14 +5,11 @@
         <Author>Hyoss</Author>
         <Version>v0.0.1</Version>
         <Description>
-        This plugin creates a single window that contains all the available travel skills, including the race, class and reputation skills.
-It is a further development of Travel Window, that has been worked on by multiple authors before.
+        Knowledge database and helper for doing missions all across Middle-earth.
+        Detects when you start a mission and provides assistance.
 
-Please report bugs and feature requests at Lotrointeface or GitHub.
+Please report bugs and feature requests on GitHub.
         </Description>
-        <Image>MissionHelper/src/resources/travel.tga</Image>
     </Information>
     <Package>MissionHelper.src.Main</Package>
-    <Configuration Apartment="MissionHelper">
-    </Configuration>
 </Plugin>
