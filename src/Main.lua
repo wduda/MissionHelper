@@ -16,9 +16,12 @@ import "MissionHelper.src.MissionButton";
 Plugin = Turbine.Plugin;
 Player = Turbine.Gameplay.LocalPlayer:GetInstance();
 
+-- Store last accepted mission info for manual window opens
+lastMissionInfo = nil;
+
 -- Plugin load handler
 function PluginLoad(_sender, _args)
-    Turbine.Shell.WriteLine("<rgb=#DAA520>MissionHelper v" ..
+    Turbine.Shell.WriteLine("<rgb=#DAA520>MissionHelper" ..
         Plugins["MissionHelper"]:GetVersion() .. " loaded</rgb>");
 
     -- Load settings FIRST (before creating UI)
@@ -63,6 +66,8 @@ function DetectMission(message)
         -- Check if we have data for this mission
         if MissionData:HasMission(missionName) then
             local missionInfo = MissionData:GetMissionInfo(missionName);
+            -- remember last accepted mission in case user opens window manually
+            lastMissionInfo = missionInfo;
             missionWindow:ShowMission(missionInfo);
             Turbine.Shell.WriteLine("<rgb=#90EE90>Mission window displayed</rgb>");
         else

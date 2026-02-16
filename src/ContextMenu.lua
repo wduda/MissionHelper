@@ -75,6 +75,10 @@ function MissionContextMenu:ToggleWindowVisibility()
     local newState = not missionWindow:IsVisible();
     missionWindow:SetVisible(newState);
     Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Window " .. (newState and "shown" or "hidden") .. "</rgb>");
+    if newState and lastMissionInfo ~= nil then
+        missionWindow:ShowMission(lastMissionInfo);
+        Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Showing last accepted mission</rgb>");
+    end
     self:SetSelections();
 end
 
