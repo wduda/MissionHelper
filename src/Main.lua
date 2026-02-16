@@ -21,7 +21,7 @@ lastMissionInfo = nil;
 
 -- Plugin load handler
 function PluginLoad(_sender, _args)
-    Turbine.Shell.WriteLine("<rgb=#DAA520>MissionHelper" ..
+    Turbine.Shell.WriteLine("<rgb=#DAA520>MissionHelper " ..
         Plugins["MissionHelper"]:GetVersion() .. " loaded</rgb>");
 
     -- Load settings FIRST (before creating UI)
@@ -40,6 +40,7 @@ function PluginLoad(_sender, _args)
         -- Note: We cast a wide net since we don't know exact chat type for missions yet
         if chatArgs.ChatType == Turbine.ChatType.Standard or
            chatArgs.ChatType == Turbine.ChatType.Advancement or
+           chatArgs.ChatType == Turbine.ChatType.Quest or
            chatArgs.ChatType == Turbine.ChatType.PlayerCombat then
             local message = tostring(chatArgs.Message);
             DetectMission(message);
