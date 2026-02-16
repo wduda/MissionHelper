@@ -1,3 +1,4 @@
 .vscode/settings.json
-Turbine
-.DS_Store
+.skills
+*.code-workspace
+turbine/*
