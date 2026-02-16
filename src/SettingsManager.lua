@@ -23,7 +23,6 @@ function CreateSettingsConfig()
     AddSettingConfig("buttonVisible", 1);           -- Button visibility (1=visible, 0=hidden)
     AddSettingConfig("buttonMinOpacity", 0.8);      -- Button opacity when not hovering
     AddSettingConfig("buttonMaxOpacity", 1.0);      -- Button opacity when hovering
-    AddSettingConfig("lockButtonPosition", 0);      -- Lock button position (1=locked, 0=unlocked)
 
     -- Window settings
     AddSettingConfig("windowRelativeX", 0.1);       -- Window X position (10% screen width)

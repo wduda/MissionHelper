@@ -15,15 +15,12 @@ function MissionContextMenu:Constructor(parentButton)
     -- Create menu items
     self.showButtonItem = Turbine.UI.MenuItem("Show Button", true, true);
     self.showWindowItem = Turbine.UI.MenuItem("Show Window", true, true);
-    self.lockPositionItem = Turbine.UI.MenuItem("Lock Button Position", true, true);
     self.aboutItem = Turbine.UI.MenuItem("About Mission Helper", true, false);
 
     -- Add items to menu
     local items = self:GetItems();
     items:Add(self.showButtonItem);
     items:Add(self.showWindowItem);
-    items:Add(Turbine.UI.MenuItem("─────────────────────", false, false));
-    items:Add(self.lockPositionItem);
     items:Add(Turbine.UI.MenuItem("─────────────────────", false, false));
     items:Add(self.aboutItem);
 
@@ -36,10 +33,6 @@ function MissionContextMenu:Constructor(parentButton)
         self:ToggleWindowVisibility();
     end
 
-    self.lockPositionItem.Click = function(sender, args)
-        self:ToggleLockPosition();
-    end
-
     self.aboutItem.Click = function(sender, args)
         self:ShowAbout();
     end
@@ -49,7 +42,6 @@ end
 function MissionContextMenu:SetSelections()
     self.showButtonItem:SetChecked(Settings.buttonVisible == 1);
     self.showWindowItem:SetChecked(missionWindow:IsVisible());
-    self.lockPositionItem:SetChecked(Settings.lockButtonPosition == 1);
 end
 
 -- Show the context menu with updated states
@@ -75,19 +67,6 @@ function MissionContextMenu:ToggleWindowVisibility()
     local newState = not missionWindow:IsVisible();
     missionWindow:SetVisible(newState);
     self:SetSelections();
-end
-
--- Toggle lock position setting
-function MissionContextMenu:ToggleLockPosition()
-    Settings.lockButtonPosition = (Settings.lockButtonPosition == 1) and 0 or 1;
-    SaveSettings();
-    self:SetSelections();
-
-    if Settings.lockButtonPosition == 1 then
-        Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Button position locked</rgb>");
-    else
-        Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Button position unlocked</rgb>");
-    end
 end
 
 -- Show about information

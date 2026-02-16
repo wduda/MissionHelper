@@ -82,11 +82,6 @@ function MissionButton:Constructor()
         if (isMoving and
             Turbine.Engine.GetGameTime() - buttonDownTime > BehaviorConstants.BUTTON_DRAG_DELAY) then
 
-            -- Check if position is locked
-            if Settings.lockButtonPosition == 1 then
-                return
-            end
-
             hasMoved = true;
 
             -- Visual feedback during drag (red tint)
