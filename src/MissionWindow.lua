@@ -1,119 +1,249 @@
-import "Turbine";
-import "Turbine.UI";
-import "Turbine.UI.Lotro";
-import "MissionHelper.src.SettingsManager";
+import "Turbine"
+import "Turbine.UI"
+import "Turbine.UI.Lotro"
+import "MissionHelper.src.SettingsManager"
 
 --[[ MissionWindow - UI Window for displaying mission help ]]--
 --[[ Shows mission name and help text when missions are detected ]]--
 
--- MissionWindow class definition
-MissionWindow = class(Turbine.UI.Window);
+MissionWindow = class(Turbine.UI.Window)
+
+local WINDOW_WIDTH = 400
+local WINDOW_HEIGHT = 250
+local HEADER_PADDING_X = 10
+local HEADER_TITLE_Y = 8
+local CLOSE_SIZE = 12
+local CLOSE_X_OFFSET = 18
+local MISSION_ROW_Y = 30
+local PREFIX_WIDTH = 110
+local CONTENT_Y = 56
+local CONTENT_BOTTOM_PADDING = 10
+local SCROLLBAR_WIDTH = 10
+local SCROLLBAR_GAP = 4
+local COLOR_RED = Turbine.UI.Color(1, 0.8, 0.2, 0.2)
+local COLOR_RED_HOVER = Turbine.UI.Color(1, 0.95, 0.3, 0.3)
+
+local function TrimText(text)
+    if text == nil then
+        return ""
+    end
+
+    local str = tostring(text)
+    str = str:gsub("^%s+", "")
+    str = str:gsub("%s+$", "")
+    return str
+end
+
+local function ClampToScreen(x, y, width, height)
+    local screenWidth, screenHeight = Turbine.UI.Display.GetSize()
+    local maxX = math.max(0, screenWidth - width)
+    local maxY = math.max(0, screenHeight - height)
+
+    local clampedX = math.max(0, math.min(x, maxX))
+    local clampedY = math.max(0, math.min(y, maxY))
+    return clampedX, clampedY
+end
+
+function MissionWindow:ApplySavedPosition()
+    local screenWidth, screenHeight = Turbine.UI.Display.GetSize()
+    local relativeX = Settings.windowRelativeX or 0.1
+    local relativeY = Settings.windowRelativeY or 0.1
+
+    local windowX = relativeX * screenWidth
+    local windowY = relativeY * screenHeight
+    windowX, windowY = ClampToScreen(windowX, windowY, WINDOW_WIDTH, WINDOW_HEIGHT)
+    self:SetPosition(windowX, windowY)
+end
+
+function MissionWindow:ClampCurrentPosition()
+    local posX, posY = self:GetPosition()
+    posX, posY = ClampToScreen(posX, posY, WINDOW_WIDTH, WINDOW_HEIGHT)
+    self:SetPosition(posX, posY)
+end
+
+function MissionWindow:SaveCurrentPosition()
+    local posX, posY = self:GetPosition()
+    local screenWidth, screenHeight = Turbine.UI.Display.GetSize()
+
+    if screenWidth <= 0 or screenHeight <= 0 then
+        return
+    end
+
+    Settings.windowRelativeX = posX / screenWidth
+    Settings.windowRelativeY = posY / screenHeight
+end
 
 function MissionWindow:Constructor()
-    Turbine.UI.Window.Constructor(self);
+    Turbine.UI.Window.Constructor(self)
 
-    -- Window properties
-    self:SetSize(400, 250);
+    self.isDragging = false
+    self.dragOffsetX = 0
+    self.dragOffsetY = 0
 
-    -- Load position from settings (relative to screen)
-    local screenWidth = Turbine.UI.Display.GetWidth();
-    local screenHeight = Turbine.UI.Display.GetHeight();
-    local windowX = Settings.windowRelativeX * screenWidth;
-    local windowY = Settings.windowRelativeY * screenHeight;
-    self:SetPosition(windowX, windowY);
+    self:SetSize(WINDOW_WIDTH, WINDOW_HEIGHT)
+    self:SetBackColor(Turbine.UI.Color.Black)
+    self:SetText("")
+    self:SetVisible(Settings.windowVisible == 1)
+    self:SetWantsKeyEvents(true)
+    self:ApplySavedPosition()
 
-    self:SetText("Mission Helper");
-    self:SetVisible(Settings.windowVisible == 1);
-    self:SetWantsKeyEvents(true);
+    -- Header title label (drag handle)
+    self.headerTitleLabel = Turbine.UI.Label()
+    self.headerTitleLabel:SetParent(self)
+    self.headerTitleLabel:SetPosition(HEADER_PADDING_X, HEADER_TITLE_Y)
+    self.headerTitleLabel:SetSize(220, 20)
+    self.headerTitleLabel:SetText("Mission Helper")
+    self.headerTitleLabel:SetFont(Turbine.UI.Lotro.Font.TrajanPro14)
+    self.headerTitleLabel:SetForeColor(Turbine.UI.Color.Gold)
 
-    -- Title label at top
-    self.titleLabel = Turbine.UI.Label();
-    self.titleLabel:SetParent(self);
-    self.titleLabel:SetPosition(10, 40);
-    self.titleLabel:SetSize(380, 30);
-    self.titleLabel:SetText("Mission Helper");
-    self.titleLabel:SetFont(Turbine.UI.Lotro.Font.TrajanPro16);
-    self.titleLabel:SetForeColor(Turbine.UI.Color.Gold);
+    self.headerTitleLabel.MouseDown = function(sender, args)
+        if args.Button == Turbine.UI.MouseButton.Left then
+            self.isDragging = true
+            self.dragOffsetX = args.X
+            self.dragOffsetY = args.Y
+        end
+    end
 
-    -- Mission name label
-    self.missionNameLabel = Turbine.UI.Label();
-    self.missionNameLabel:SetParent(self);
-    self.missionNameLabel:SetPosition(10, 80);
-    self.missionNameLabel:SetSize(380, 30);
-    self.missionNameLabel:SetFont(Turbine.UI.Lotro.Font.TrajanPro14);
-    self.missionNameLabel:SetForeColor(Turbine.UI.Color.White);
+    self.headerTitleLabel.MouseMove = function(sender, args)
+        if self.isDragging then
+            local mouseX, mouseY = Turbine.UI.Display.GetMousePosition()
+            local newX = mouseX - self.dragOffsetX
+            local newY = mouseY - self.dragOffsetY
+            newX, newY = ClampToScreen(newX, newY, WINDOW_WIDTH, WINDOW_HEIGHT)
+            self:SetPosition(newX, newY)
+        end
+    end
 
-    -- Help text label
-    self.helpTextLabel = Turbine.UI.Label();
-    self.helpTextLabel:SetParent(self);
-    self.helpTextLabel:SetPosition(10, 120);
-    self.helpTextLabel:SetSize(380, 80);
-    self.helpTextLabel:SetMultiline(true);
-    self.helpTextLabel:SetFont(Turbine.UI.Lotro.Font.Verdana14);
-    self.helpTextLabel:SetForeColor(Turbine.UI.Color.LightGray);
+    self.headerTitleLabel.MouseUp = function(sender, args)
+        if args.Button == Turbine.UI.MouseButton.Left then
+            self.isDragging = false
+            self:SaveCurrentPosition()
+            SaveSettings()
+        end
+    end
 
-    -- Close button
-    self.closeButton = Turbine.UI.Lotro.Button();
-    self.closeButton:SetParent(self);
-    self.closeButton:SetPosition(150, 210);
-    self.closeButton:SetSize(100, 25);
-    self.closeButton:SetText("Close");
+    -- Custom red close control
+    self.redCloseControl = Turbine.UI.Control()
+    self.redCloseControl:SetParent(self)
+    self.redCloseControl:SetSize(CLOSE_SIZE, CLOSE_SIZE)
+    self.redCloseControl:SetPosition(WINDOW_WIDTH - CLOSE_X_OFFSET, HEADER_TITLE_Y)
+    self.redCloseControl:SetBackColor(COLOR_RED)
 
-    -- Close button handler
-    self.closeButton.Click = function(sender, args)
-        self:SetVisible(false);
-    end;
+    self.redCloseControl.MouseEnter = function(sender, args)
+        self.redCloseControl:SetBackColor(COLOR_RED_HOVER)
+    end
 
-    -- Position changed handler - save position when window is dragged
-    self.PositionChanged = function(sender, args)
-        local posX, posY = self:GetPosition();
-        local screenWidth, screenHeight = Turbine.UI.Display.GetSize();
-        Settings.windowRelativeX = posX / screenWidth;
-        Settings.windowRelativeY = posY / screenHeight;
-        SaveSettings();
-    end;
+    self.redCloseControl.MouseLeave = function(sender, args)
+        self.redCloseControl:SetBackColor(COLOR_RED)
+    end
+
+    self.redCloseControl.MouseClick = function(sender, args)
+        self:SetVisible(false)
+        Settings.windowVisible = 0
+        SaveSettings()
+    end
+
+    -- Mission row
+    self.currentMissionPrefixLabel = Turbine.UI.Label()
+    self.currentMissionPrefixLabel:SetParent(self)
+    self.currentMissionPrefixLabel:SetPosition(HEADER_PADDING_X, MISSION_ROW_Y)
+    self.currentMissionPrefixLabel:SetSize(PREFIX_WIDTH, 20)
+    self.currentMissionPrefixLabel:SetText("Current Mission:")
+    self.currentMissionPrefixLabel:SetFont(Turbine.UI.Lotro.Font.Verdana14)
+    self.currentMissionPrefixLabel:SetForeColor(Turbine.UI.Color.LightGray)
+
+    self.currentMissionValueLabel = Turbine.UI.Label()
+    self.currentMissionValueLabel:SetParent(self)
+    self.currentMissionValueLabel:SetPosition(HEADER_PADDING_X + PREFIX_WIDTH, MISSION_ROW_Y)
+    self.currentMissionValueLabel:SetSize(WINDOW_WIDTH - (HEADER_PADDING_X + PREFIX_WIDTH) - HEADER_PADDING_X, 20)
+    self.currentMissionValueLabel:SetFont(Turbine.UI.Lotro.Font.Verdana14)
+    self.currentMissionValueLabel:SetForeColor(Turbine.UI.Color.White)
+    self.currentMissionValueLabel:SetText("")
+
+    -- Help text area with required TextBox + vertical scrollbar
+    local contentHeight = WINDOW_HEIGHT - CONTENT_Y - CONTENT_BOTTOM_PADDING
+    local contentWidth = WINDOW_WIDTH - (HEADER_PADDING_X * 2) - SCROLLBAR_WIDTH - SCROLLBAR_GAP
+
+    self.helpTextBox = Turbine.UI.Lotro.TextBox()
+    self.helpTextBox:SetParent(self)
+    self.helpTextBox:SetPosition(HEADER_PADDING_X, CONTENT_Y)
+    self.helpTextBox:SetSize(contentWidth, contentHeight)
+    self.helpTextBox:SetMultiline(true)
+    self.helpTextBox:SetReadOnly(true)
+    self.helpTextBox:SetFont(Turbine.UI.Lotro.Font.Verdana14)
+    self.helpTextBox:SetForeColor(Turbine.UI.Color.LightGray)
+    self.helpTextBox:SetText("")
+
+    self.helpTextScrollBar = Turbine.UI.Lotro.ScrollBar()
+    self.helpTextScrollBar:SetParent(self)
+    self.helpTextScrollBar:SetOrientation(Turbine.UI.Orientation.Vertical)
+    self.helpTextScrollBar:SetPosition(HEADER_PADDING_X + contentWidth + SCROLLBAR_GAP, CONTENT_Y)
+    self.helpTextScrollBar:SetSize(SCROLLBAR_WIDTH, contentHeight)
+    self.helpTextBox:SetVerticalScrollBar(self.helpTextScrollBar)
 end
 
 -- Update window with mission information and show it
--- @param missionInfo: table - Mission info with enhanced fields (region, objectives, tacticalAdvice, etc.)
+-- @param missionInfo: table - Mission info with reduced fields (timeRange, timeAssessment, difficulty, objectives, missionDescription, tacticalAdvice, bugs)
 function MissionWindow:ShowMission(missionInfo)
     if missionInfo then
-        self.missionNameLabel:SetText(missionInfo.name);
+        local missionName = TrimText(missionInfo.name)
+        if missionName == "" then
+            missionName = "Unknown Mission"
+        end
+        self.currentMissionValueLabel:SetText(missionName)
 
-        -- Build rich display text from available fields
-        local displayText = "";
+        local displayText = ""
 
-        if missionInfo.region and missionInfo.region ~= "" then
-            displayText = displayText .. "Location: " .. missionInfo.region .. "\n\n";
+        local timeText = TrimText(missionInfo.timeRange)
+        if timeText == "" then
+            timeText = TrimText(missionInfo.timeAssessment)
+        end
+        if timeText ~= "" then
+            displayText = displayText .. "Time: " .. timeText .. "\n\n"
         end
 
-        if missionInfo.duration and missionInfo.duration ~= "" then
-            displayText = displayText .. "Duration: " .. missionInfo.duration .. "\n";
+        local difficultyText = TrimText(missionInfo.difficulty)
+        local difficultyDetails = TrimText(missionInfo.difficultyDetails)
+        if difficultyText ~= "" then
+            if difficultyDetails ~= "" and difficultyDetails ~= difficultyText then
+                displayText = displayText .. "Difficulty: " .. difficultyText .. " (" .. difficultyDetails .. ")\n\n"
+            else
+                displayText = displayText .. "Difficulty: " .. difficultyText .. "\n\n"
+            end
         end
 
-        if missionInfo.difficulty and missionInfo.difficulty ~= "" then
-            displayText = displayText .. "Difficulty: " .. missionInfo.difficulty .. "\n\n";
+        local objectivesText = TrimText(missionInfo.objectives)
+        if objectivesText ~= "" then
+            displayText = displayText .. "Objectives: " .. objectivesText .. "\n\n"
         end
 
-        if missionInfo.objectives and missionInfo.objectives ~= "" then
-            displayText = displayText .. "Objectives: " .. missionInfo.objectives .. "\n\n";
+        local missionDescriptionText = TrimText(missionInfo.missionDescription)
+        if missionDescriptionText ~= "" then
+            displayText = displayText .. "Mission: " .. missionDescriptionText .. "\n\n"
         end
 
-        if missionInfo.clickableObjectives and missionInfo.clickableObjectives ~= "" then
-            displayText = displayText .. "Clickables: " .. missionInfo.clickableObjectives .. "\n\n";
+        local tacticalAdviceText = TrimText(missionInfo.tacticalAdvice)
+        if tacticalAdviceText ~= "" then
+            displayText = displayText .. "Strategy: " .. tacticalAdviceText .. "\n\n"
         end
 
-        -- Primary content: tacticalAdvice or fallback to helpText (backwards compatibility)
-        local mainContent = missionInfo.tacticalAdvice or missionInfo.helpText or "No tactical information available";
-        if mainContent ~= "" then
-            displayText = displayText .. "Strategy: " .. mainContent;
+        local bugsText = TrimText(missionInfo.bugs)
+        if bugsText ~= "" then
+            displayText = displayText .. "Bugs: " .. bugsText
         end
 
-        self.helpTextLabel:SetText(displayText);
-        self:SetVisible(true);
+        displayText = TrimText(displayText)
+        if displayText == "" then
+            displayText = "no helptext"
+        end
 
-        -- Save visibility state
-        Settings.windowVisible = 1;
-        SaveSettings();
+        self.helpTextBox:SetText(displayText)
+        self:ClampCurrentPosition()
+        self:SetVisible(true)
+        self:Activate()
+
+        Settings.windowVisible = 1
+        self:SaveCurrentPosition()
+        SaveSettings()
     end
 end

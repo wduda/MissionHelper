@@ -54,27 +54,49 @@ end
 -- Detect mission start from chat message
 function DetectMission(message)
     -- Pattern: "New Quest: Mission: [Mission Name]"
-    local missionName = string.match(message, "New Quest: Mission:%s*(.+)");
+    local missionName = string.match(message, "New Quest: Mission:%s*(.+)")
 
     if missionName then
         -- Clean up mission name (remove trailing whitespace)
-        missionName = missionName:gsub("%s*$", "");
+        missionName = missionName:gsub("%s*$", "")
 
         -- Debug output
-        Turbine.Shell.WriteLine("<rgb=#00FF00>*** MISSION DETECTED ***</rgb>");
-        Turbine.Shell.WriteLine("<rgb=#00FF00>Mission: " .. missionName .. "</rgb>");
+        Turbine.Shell.WriteLine("<rgb=#00FF00>*** MISSION DETECTED ***</rgb>")
+        Turbine.Shell.WriteLine("<rgb=#00FF00>Mission: " .. missionName .. "</rgb>")
 
-        -- Check if we have data for this mission
+        local missionInfo = nil
+
+        -- Show the window for every detected mission, with fallback text if unknown
         if MissionData:HasMission(missionName) then
-            local missionInfo = MissionData:GetMissionInfo(missionName);
-            -- remember last accepted mission in case user opens window manually
-            lastMissionInfo = missionInfo;
-            missionWindow:ShowMission(missionInfo);
-            Turbine.Shell.WriteLine("<rgb=#90EE90>Mission window displayed</rgb>");
+            missionInfo = MissionData:GetMissionInfo(missionName)
         else
-            -- Unknown mission - log for future enhancement
-            Turbine.Shell.WriteLine("<rgb=#FFFF00>Note: No help data for mission: " .. missionName .. "</rgb>");
+            missionInfo = {
+                name = missionName,
+                objectives = "",
+                missionDescription = "",
+                tacticalAdvice = "no helptext",
+                bugs = "",
+                delvingEnabled = false,
+                difficulty = "no delving difficulty",
+                difficultyDetails = "",
+                timeRange = "",
+                timeAssessment = ""
+            }
+            Turbine.Shell.WriteLine("<rgb=#FFFF00>Note: No help data for mission: " .. missionName .. "</rgb>")
         end
+
+        -- Ensure detected chat name is always shown in the window title row
+        missionInfo.name = missionName
+
+        -- remember last accepted mission in case user opens window manually
+        lastMissionInfo = missionInfo
+
+        if missionWindow == nil then
+            missionWindow = MissionWindow()
+        end
+
+        missionWindow:ShowMission(missionInfo)
+        Turbine.Shell.WriteLine("<rgb=#90EE90>Mission window displayed</rgb>")
     end
 end
 
