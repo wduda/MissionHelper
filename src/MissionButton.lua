@@ -81,14 +81,18 @@ function MissionButton:Constructor()
     self.MouseMove = function(sender, args)
         if (isMoving and
             Turbine.Engine.GetGameTime() - buttonDownTime > BehaviorConstants.BUTTON_DRAG_DELAY) then
+            local dx = args.X - startX;
+            local dy = args.Y - startY;
 
-            hasMoved = true;
+            if dx ~= 0 or dy ~= 0 then
+                hasMoved = true;
 
-            -- Visual feedback during drag (red tint)
-            self:SetBackColor(Turbine.UI.Color(1.0, 0.8, 0.8, 1.0));
+                -- Visual feedback during drag (red tint)
+                self:SetBackColor(Turbine.UI.Color(1.0, 0.8, 0.8, 1.0));
 
-            local oldX, oldY = self:GetPosition();
-            self:SetPosition(oldX + args.X - startX, oldY + args.Y - startY);
+                local oldX, oldY = self:GetPosition();
+                self:SetPosition(oldX + dx, oldY + dy);
+            end
         end
     end
 
@@ -112,7 +116,13 @@ function MissionButton:Constructor()
                 Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Button position saved</rgb>");
             else
                 -- Toggle window (no drag occurred)
-                missionWindow:SetVisible(not missionWindow:IsVisible());
+                if missionWindow == nil then
+                    missionWindow = MissionWindow();
+                    Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Mission window created</rgb>");
+                end
+                local newState = not missionWindow:IsVisible();
+                missionWindow:SetVisible(newState);
+                Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Window " .. (newState and "shown" or "hidden") .. "</rgb>");
             end
         elseif (args.Button == Turbine.UI.MouseButton.Right) then
             -- Show context menu

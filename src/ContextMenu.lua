@@ -41,7 +41,11 @@ end
 -- Update checkbox states from current settings
 function MissionContextMenu:SetSelections()
     self.showButtonItem:SetChecked(Settings.buttonVisible == 1);
-    self.showWindowItem:SetChecked(missionWindow:IsVisible());
+    if missionWindow ~= nil then
+        self.showWindowItem:SetChecked(missionWindow:IsVisible());
+    else
+        self.showWindowItem:SetChecked(false);
+    end
 end
 
 -- Show the context menu with updated states
@@ -64,8 +68,13 @@ end
 
 -- Toggle window visibility
 function MissionContextMenu:ToggleWindowVisibility()
+    if missionWindow == nil then
+        missionWindow = MissionWindow();
+        Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Mission window created</rgb>");
+    end
     local newState = not missionWindow:IsVisible();
     missionWindow:SetVisible(newState);
+    Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Window " .. (newState and "shown" or "hidden") .. "</rgb>");
     self:SetSelections();
 end
 
