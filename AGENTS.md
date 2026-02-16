@@ -14,7 +14,9 @@ use markdown-documentation skill for writing .md files
 
 ## code style
 
-when writing code, do not use ; to end lines as a convention3
+when writing code, do not use ; to end lines as a convention
+when writing .md files, never use emphasis instead of headings
+when writing .md files, leave out your questions that usually come at the end
 
 ## changelog data style
 
