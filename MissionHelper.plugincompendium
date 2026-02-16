@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PluginConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <Id>1113</Id>
+  <Id>XXXX</Id>
   <Name>MissionHelper</Name>
   <Version>v0.0.1</Version>
   <Author>Hyoss</Author>
-  <InfoUrl>http://www.lotrointerface.com/downloads/info</InfoUrl>
-  <DownloadUrl>http://www.lotrointerface.com/downloads/download</DownloadUrl>
+  <InfoUrl>http://www.lotrointerface.com/downloads/infoXXXX</InfoUrl>
+  <DownloadUrl>http://www.lotrointerface.com/downloads/downloadXXXX</DownloadUrl>
   <Descriptors>
     <descriptor>MissioHelper\MissioHelper.plugin</descriptor>
   </Descriptors>
   <Dependencies>
-    <dependency>0</dependency>
+    <dependency>1064</dependency>
   </Dependencies>
 </PluginConfig>

@@ -6,9 +6,8 @@
         <Version>v0.0.1</Version>
         <Description>
         Knowledge database and helper for doing missions all across Middle-earth.
-        Detects when you start a mission and provides assistance.
-
-Please report bugs and feature requests on GitHub.
+        Detects when you start a mission and provides assistance. 
+        Please report bugs and feature requests on GitHub.
         </Description>
     </Information>
     <Package>MissionHelper.src.Main</Package>
