@@ -9,14 +9,15 @@ import "MissionHelper.src.SettingsManager"
 MissionWindow = class(Turbine.UI.Window)
 
 local WINDOW_WIDTH = 400
-local WINDOW_HEIGHT = 250
+local WINDOW_HEIGHT = 320
 local HEADER_PADDING_X = 10
 local HEADER_TITLE_Y = 8
 local CLOSE_SIZE = 12
 local CLOSE_X_OFFSET = 18
 local MISSION_ROW_Y = 30
+local TIMER_ROW_Y = 50
 local PREFIX_WIDTH = 110
-local CONTENT_Y = 56
+local CONTENT_Y = 74
 local CONTENT_BOTTOM_PADDING = 10
 local SCROLLBAR_WIDTH = 10
 local SCROLLBAR_GAP = 4
@@ -32,6 +33,36 @@ local function TrimText(text)
     str = str:gsub("^%s+", "")
     str = str:gsub("%s+$", "")
     return str
+end
+
+local function FormatDurationMMSS(totalSeconds)
+    local seconds = tonumber(totalSeconds) or 0
+    if seconds < 0 then
+        seconds = 0
+    end
+
+    local whole = math.floor(seconds)
+    local minutes = math.floor(whole / 60)
+    local remainder = whole - (minutes * 60)
+    return string.format("%02d:%02d", minutes, remainder)
+end
+
+local function GetAccountBestDurationText(missionName)
+    if MissionStatsManager == nil or MissionStatsManager.GetMissionStats == nil then
+        return "-"
+    end
+
+    local stats = MissionStatsManager:GetMissionStats(missionName)
+    if stats == nil or stats.account == nil then
+        return "-"
+    end
+
+    local bestSeconds = tonumber(stats.account.bestDurationSec) or 0
+    if bestSeconds <= 0 then
+        return "-"
+    end
+
+    return FormatDurationMMSS(bestSeconds)
 end
 
 local function ClampToScreen(x, y, width, height)
@@ -86,6 +117,13 @@ function MissionWindow:Constructor()
     self:SetVisible(Settings.windowVisible == 1)
     self:SetWantsKeyEvents(true)
     self:ApplySavedPosition()
+
+    self.currentMissionInfo = nil
+    self.liveTimerMissionName = nil
+    self.liveTimerElapsedSeconds = 0
+    self.liveTimerIsRunning = false
+    self.lastRunMissionName = nil
+    self.lastRunDurationSeconds = nil
 
     -- Header title label (drag handle)
     self.headerTitleLabel = Turbine.UI.Label()
@@ -160,6 +198,14 @@ function MissionWindow:Constructor()
     self.currentMissionValueLabel:SetForeColor(Turbine.UI.Color.White)
     self.currentMissionValueLabel:SetText("")
 
+    self.timerStatusLabel = Turbine.UI.Label()
+    self.timerStatusLabel:SetParent(self)
+    self.timerStatusLabel:SetPosition(HEADER_PADDING_X, TIMER_ROW_Y)
+    self.timerStatusLabel:SetSize(WINDOW_WIDTH - (HEADER_PADDING_X * 2), 20)
+    self.timerStatusLabel:SetFont(Turbine.UI.Lotro.Font.Verdana14)
+    self.timerStatusLabel:SetForeColor(Turbine.UI.Color(1, 0.9, 0.85, 0.5))
+    self.timerStatusLabel:SetText("")
+
     -- Help text area with required TextBox + vertical scrollbar
     local contentHeight = WINDOW_HEIGHT - CONTENT_Y - CONTENT_BOTTOM_PADDING
     local contentWidth = WINDOW_WIDTH - (HEADER_PADDING_X * 2) - SCROLLBAR_WIDTH - SCROLLBAR_GAP
@@ -182,62 +228,126 @@ function MissionWindow:Constructor()
     self.helpTextBox:SetVerticalScrollBar(self.helpTextScrollBar)
 end
 
+function MissionWindow:SetLiveTimer(missionName, elapsedSeconds, isRunning)
+    self.liveTimerMissionName = missionName
+    self.liveTimerElapsedSeconds = tonumber(elapsedSeconds) or 0
+    self.liveTimerIsRunning = (isRunning == true)
+
+    if not self.liveTimerIsRunning then
+        self.lastRunMissionName = missionName
+        self.lastRunDurationSeconds = self.liveTimerElapsedSeconds
+    end
+
+    if self.currentMissionInfo ~= nil then
+        self:RenderMissionText()
+    end
+end
+
+function MissionWindow:ClearLiveTimer()
+    self.liveTimerMissionName = nil
+    self.liveTimerElapsedSeconds = 0
+    self.liveTimerIsRunning = false
+
+    if self.currentMissionInfo ~= nil then
+        self:RenderMissionText()
+    end
+end
+
+function MissionWindow:RenderMissionText()
+    if self.currentMissionInfo == nil then
+        self.timerStatusLabel:SetText("")
+        self.helpTextBox:SetText("no helptext")
+        return
+    end
+
+    local missionInfo = self.currentMissionInfo
+    local missionName = TrimText(missionInfo.name)
+    if missionName == "" then
+        missionName = "Unknown Mission"
+    end
+    self.currentMissionValueLabel:SetText(missionName)
+
+    local accountBestText = GetAccountBestDurationText(missionName)
+
+    if self.liveTimerIsRunning and self.liveTimerMissionName == missionName then
+        self.timerStatusLabel:SetText(
+            "Run Time: " .. FormatDurationMMSS(self.liveTimerElapsedSeconds) ..
+            " | PB: " .. accountBestText
+        )
+    elseif self.lastRunMissionName == missionName and self.lastRunDurationSeconds ~= nil then
+        self.timerStatusLabel:SetText(
+            "Last Run: " .. FormatDurationMMSS(self.lastRunDurationSeconds) ..
+            " | PB: " .. accountBestText
+        )
+    else
+        self.timerStatusLabel:SetText("")
+    end
+
+    local displayText = ""
+
+    local timeText = TrimText(missionInfo.timeRange)
+    if timeText == "" then
+        timeText = TrimText(missionInfo.timeAssessment)
+    end
+    if timeText ~= "" then
+        displayText = displayText .. "Time: " .. timeText .. "\n\n"
+    end
+
+    local difficultyText = TrimText(missionInfo.difficulty)
+    local difficultyDetails = TrimText(missionInfo.difficultyDetails)
+    if difficultyText ~= "" then
+        if difficultyDetails ~= "" and difficultyDetails ~= difficultyText then
+            displayText = displayText .. "Difficulty: " .. difficultyText .. " (" .. difficultyDetails .. ")\n\n"
+        else
+            displayText = displayText .. "Difficulty: " .. difficultyText .. "\n\n"
+        end
+    end
+
+    local objectivesText = TrimText(missionInfo.objectives)
+    if objectivesText ~= "" then
+        displayText = displayText .. "Objectives: " .. objectivesText .. "\n\n"
+    end
+
+    local missionDescriptionText = TrimText(missionInfo.missionDescription)
+    if missionDescriptionText ~= "" then
+        displayText = displayText .. "Mission: " .. missionDescriptionText .. "\n\n"
+    end
+
+    local tacticalAdviceText = TrimText(missionInfo.tacticalAdvice)
+    if tacticalAdviceText ~= "" then
+        displayText = displayText .. "Strategy: " .. tacticalAdviceText .. "\n\n"
+    end
+
+    local bugsText = TrimText(missionInfo.bugs)
+    if bugsText ~= "" then
+        displayText = displayText .. "Bugs: " .. bugsText
+    end
+
+    displayText = TrimText(displayText)
+    if displayText == "" then
+        displayText = "no helptext"
+    end
+
+    self.helpTextBox:SetText(displayText)
+end
+
 -- Update window with mission information and show it
 -- @param missionInfo: table - Mission info with reduced fields (timeRange, timeAssessment, difficulty, objectives, missionDescription, tacticalAdvice, bugs)
 function MissionWindow:ShowMission(missionInfo)
     if missionInfo then
-        local missionName = TrimText(missionInfo.name)
-        if missionName == "" then
-            missionName = "Unknown Mission"
-        end
-        self.currentMissionValueLabel:SetText(missionName)
-
-        local displayText = ""
-
-        local timeText = TrimText(missionInfo.timeRange)
-        if timeText == "" then
-            timeText = TrimText(missionInfo.timeAssessment)
-        end
-        if timeText ~= "" then
-            displayText = displayText .. "Time: " .. timeText .. "\n\n"
+        local incomingMissionName = TrimText(missionInfo.name)
+        local previousMissionName = ""
+        if self.currentMissionInfo ~= nil then
+            previousMissionName = TrimText(self.currentMissionInfo.name)
         end
 
-        local difficultyText = TrimText(missionInfo.difficulty)
-        local difficultyDetails = TrimText(missionInfo.difficultyDetails)
-        if difficultyText ~= "" then
-            if difficultyDetails ~= "" and difficultyDetails ~= difficultyText then
-                displayText = displayText .. "Difficulty: " .. difficultyText .. " (" .. difficultyDetails .. ")\n\n"
-            else
-                displayText = displayText .. "Difficulty: " .. difficultyText .. "\n\n"
-            end
+        if previousMissionName ~= "" and incomingMissionName ~= previousMissionName then
+            self.lastRunMissionName = nil
+            self.lastRunDurationSeconds = nil
         end
 
-        local objectivesText = TrimText(missionInfo.objectives)
-        if objectivesText ~= "" then
-            displayText = displayText .. "Objectives: " .. objectivesText .. "\n\n"
-        end
-
-        local missionDescriptionText = TrimText(missionInfo.missionDescription)
-        if missionDescriptionText ~= "" then
-            displayText = displayText .. "Mission: " .. missionDescriptionText .. "\n\n"
-        end
-
-        local tacticalAdviceText = TrimText(missionInfo.tacticalAdvice)
-        if tacticalAdviceText ~= "" then
-            displayText = displayText .. "Strategy: " .. tacticalAdviceText .. "\n\n"
-        end
-
-        local bugsText = TrimText(missionInfo.bugs)
-        if bugsText ~= "" then
-            displayText = displayText .. "Bugs: " .. bugsText
-        end
-
-        displayText = TrimText(displayText)
-        if displayText == "" then
-            displayText = "no helptext"
-        end
-
-        self.helpTextBox:SetText(displayText)
+        self.currentMissionInfo = missionInfo
+        self:RenderMissionText()
         self:ClampCurrentPosition()
         self:SetVisible(true)
         self:Activate()

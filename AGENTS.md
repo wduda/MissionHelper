@@ -2,7 +2,8 @@
 
 ## workflow
 
-every time you prepare a plan, save the plan into an .md file in the `plans` folder, named with the date in ISO 8601 format and an abbreviated description of the feature, and if you update said plan save only the updated plan into that same file
+every plan you prepare needs to have the following first steps: save the plan into an .md file in the `plans` folder, named with the date in ISO 8601 format and an abbreviated description of the feature, wait for the user to confirm said plan
+if you user asks to update or refine the plan then the first step of the updated plan is to update said .md file with the plan as first step and wait for confirmation
 
 ## skills
 
