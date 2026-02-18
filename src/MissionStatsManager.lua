@@ -64,6 +64,12 @@ local function RecordCompletionInScope(statsTable, missionName, durationSec)
     entry.averageDurationSec = entry.totalDurationSec / entry.count
 end
 
+local function EnsureLoaded(self)
+    if self.characterStats == nil or self.accountStats == nil then
+        self:Load()
+    end
+end
+
 function MissionStatsManager:Load()
     self.characterStats = EnsureStatsTableShape(PatchDataLoad(Turbine.DataScope.Character, CHARACTER_STATS_KEY))
     self.accountStats = EnsureStatsTableShape(PatchDataLoad(Turbine.DataScope.Account, ACCOUNT_STATS_KEY))
@@ -92,9 +98,7 @@ function MissionStatsManager:RecordCompletion(missionName, durationSec)
         duration = 0
     end
 
-    if self.characterStats == nil or self.accountStats == nil then
-        self:Load()
-    end
+    EnsureLoaded(self)
 
     RecordCompletionInScope(self.characterStats, missionName, duration)
     RecordCompletionInScope(self.accountStats, missionName, duration)
@@ -103,6 +107,8 @@ function MissionStatsManager:RecordCompletion(missionName, durationSec)
 end
 
 function MissionStatsManager:GetMissionStats(missionName)
+    EnsureLoaded(self)
+
     local characterEntry = nil
     local accountEntry = nil
 

@@ -65,6 +65,20 @@ local function GetAccountBestDurationText(missionName)
     return FormatDurationMMSS(bestSeconds)
 end
 
+local function BuildTimerStatusText(isRunning, liveTimerMissionName, liveTimerElapsedSeconds, lastRunMissionName, lastRunDurationSeconds, missionName)
+    local accountBestText = GetAccountBestDurationText(missionName)
+
+    if isRunning and liveTimerMissionName == missionName then
+        return "Run Time: " .. FormatDurationMMSS(liveTimerElapsedSeconds) .. " | PB: " .. accountBestText
+    end
+
+    if lastRunMissionName == missionName and lastRunDurationSeconds ~= nil then
+        return "Last Run: " .. FormatDurationMMSS(lastRunDurationSeconds) .. " | PB: " .. accountBestText
+    end
+
+    return ""
+end
+
 local function ClampToScreen(x, y, width, height)
     local screenWidth, screenHeight = Turbine.UI.Display.GetSize()
     local maxX = math.max(0, screenWidth - width)
@@ -267,21 +281,16 @@ function MissionWindow:RenderMissionText()
     end
     self.currentMissionValueLabel:SetText(missionName)
 
-    local accountBestText = GetAccountBestDurationText(missionName)
-
-    if self.liveTimerIsRunning and self.liveTimerMissionName == missionName then
-        self.timerStatusLabel:SetText(
-            "Run Time: " .. FormatDurationMMSS(self.liveTimerElapsedSeconds) ..
-            " | PB: " .. accountBestText
+    self.timerStatusLabel:SetText(
+        BuildTimerStatusText(
+            self.liveTimerIsRunning,
+            self.liveTimerMissionName,
+            self.liveTimerElapsedSeconds,
+            self.lastRunMissionName,
+            self.lastRunDurationSeconds,
+            missionName
         )
-    elseif self.lastRunMissionName == missionName and self.lastRunDurationSeconds ~= nil then
-        self.timerStatusLabel:SetText(
-            "Last Run: " .. FormatDurationMMSS(self.lastRunDurationSeconds) ..
-            " | PB: " .. accountBestText
-        )
-    else
-        self.timerStatusLabel:SetText("")
-    end
+    )
 
     local displayText = ""
 

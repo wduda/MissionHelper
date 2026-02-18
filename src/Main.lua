@@ -27,11 +27,6 @@ local expectedQuestChatTypes = {
     [Turbine.ChatType.PlayerCombat] = true
 }
 
-local excludedMissionQuests = {
-    ["march on gundabad: missions for the cause"] = true,
-    ["march on gundabad: assisting the war effort (daily)"] = true
-}
-
 local chatTypeNames = {}
 local knownChatTypeNames = {
     [0] = "Undef",
@@ -286,11 +281,6 @@ function NormalizeMissionNameFromQuestMessage(message)
     return normalizedMissionName
 end
 
-local function IsExcludedMissionQuest(missionName)
-    local normalized = string.lower(TrimText(missionName))
-    return excludedMissionQuests[normalized] == true
-end
-
 local function IsKnownMissionQuest(missionName)
     if missionName == nil or missionName == "" then
         return false
@@ -446,7 +436,7 @@ end
 
 local function ParseAnyLeaveChannelMessage(message)
     local trimmed = TrimText(message)
-    local regionName, channelName = string.match(trimmed, "^Left%s+the%s+(.+)%s+[%-%–]%s+(.+)%s+channel%.?$")
+    local regionName, channelName = string.match(trimmed, "^Left%s+the%s+(.+)%s+%-%s+(.+)%s+channel%.?$")
     if regionName == nil or channelName == nil then
         return nil, nil
     end
@@ -590,16 +580,6 @@ function DetectMission(message, chatType)
         return
     end
 
-    if IsExcludedMissionQuest(missionName) then
-        DebugChatEvent(
-            "excluded_mission_quest_detected",
-            chatType,
-            message,
-            "mission=\"" .. EscapeDebugText(missionName) .. "\""
-        )
-        return
-    end
-
     if not IsKnownMissionQuest(missionName) then
         DebugChatEvent(
             "quest_non_mission_ignored",
@@ -699,3 +679,4 @@ end
 
 Plugin.Load = PluginLoad
 Plugin.Unload = PluginUnload
+

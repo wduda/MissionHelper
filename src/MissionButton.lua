@@ -1,139 +1,152 @@
-import "Turbine";
-import "Turbine.UI";
-import "MissionHelper.src.SettingsManager";
-import "MissionHelper.src.ContextMenu";
+import "Turbine"
+import "Turbine.UI"
+import "MissionHelper.src.SettingsManager"
+import "MissionHelper.src.ContextMenu"
 
 --[[ MissionButton - Toggle button for Mission Helper window ]]--
---[[ Enhanced with icon, hover effects, drag-to-move, and context menu ]]--
+--[[ Supports hover, drag-to-move, left-click toggle, right-click context menu ]]--
 
--- MissionButton class definition
-MissionButton = class(Turbine.UI.Window);
+MissionButton = class(Turbine.UI.Window)
+
+local BUTTON_SIZE = 32
+local ICON_PATH = "MissionHelper/src/resources/mission_helper_32x32.tga"
+local DRAG_TINT = Turbine.UI.Color(1.0, 0.8, 0.8, 1.0)
+local ICON_TINT = Turbine.UI.Color(1.0, 1.0, 1.0, 1.0)
+local FALLBACK_TINT = Turbine.UI.Color(1.0, 0.8, 0.4, 0.0)
+
+local function ClampPositionToScreen(x, y, width, height)
+    local screenWidth, screenHeight = Turbine.UI.Display.GetSize()
+    local maxX = math.max(0, screenWidth - width)
+    local maxY = math.max(0, screenHeight - height)
+
+    local clampedX = math.max(0, math.min(x, maxX))
+    local clampedY = math.max(0, math.min(y, maxY))
+    return clampedX, clampedY
+end
+
+local function EnsureMissionWindow()
+    if missionWindow == nil then
+        missionWindow = MissionWindow()
+        Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Mission window created</rgb>")
+    end
+end
+
+local function SaveButtonPositionFromWindow(buttonWindow)
+    local posX, posY = buttonWindow:GetPosition()
+    local screenWidth, screenHeight = Turbine.UI.Display.GetSize()
+    if screenWidth <= 0 or screenHeight <= 0 then
+        return
+    end
+
+    Settings.buttonRelativeX = posX / screenWidth
+    Settings.buttonRelativeY = posY / screenHeight
+    SaveSettings()
+end
 
 function MissionButton:Constructor()
-    Turbine.UI.Window.Constructor(self);
+    Turbine.UI.Window.Constructor(self)
 
-    -- Button properties
-    self:SetSize(32, 32);
-    self:SetZOrder(1);
+    self:SetSize(BUTTON_SIZE, BUTTON_SIZE)
+    self:SetZOrder(1)
 
-    -- Try to load custom icon, fallback to colored square
-    -- Note: Using pcall to gracefully handle missing TGA file
-    local success = pcall(function()
-        self:SetBackground("MissionHelper/src/resources/mission_helper_32x32.tga");
-        self:SetBackColorBlendMode(Turbine.UI.BlendMode.Multiply);
-    end);
+    local iconLoaded = pcall(function()
+        self:SetBackground(ICON_PATH)
+        self:SetBackColorBlendMode(Turbine.UI.BlendMode.Multiply)
+    end)
+    self:SetBackColor(iconLoaded and ICON_TINT or FALLBACK_TINT)
 
-    if success then
-        -- Icon loaded successfully, use white tint (neutral)
-        self:SetBackColor(Turbine.UI.Color(1.0, 1.0, 1.0, 1.0));
-    else
-        -- Icon not found, use colored square fallback (orange/gold)
-        self:SetBackColor(Turbine.UI.Color(1.0, 0.8, 0.4, 0.0));
+    local screenWidth, screenHeight = Turbine.UI.Display.GetSize()
+    local startX = (Settings.buttonRelativeX or 0.95) * screenWidth
+    local startY = (Settings.buttonRelativeY or 0.75) * screenHeight
+    startX, startY = ClampPositionToScreen(startX, startY, BUTTON_SIZE, BUTTON_SIZE)
+    self:SetPosition(startX, startY)
+
+    self:SetVisible(Settings.buttonVisible == 1)
+    self:SetOpacity(Settings.buttonMinOpacity)
+
+    local isMoving = false
+    local hasMoved = false
+    local buttonDownTime = 0
+    local dragStartX = 0
+    local dragStartY = 0
+
+    self.MouseEnter = function()
+        self:SetOpacity(Settings.buttonMaxOpacity)
     end
 
-    -- Position from settings (relative to screen)
-    local screenWidth = Turbine.UI.Display.GetWidth();
-    local screenHeight = Turbine.UI.Display.GetHeight();
-    local buttonX = Settings.buttonRelativeX * screenWidth;
-    local buttonY = Settings.buttonRelativeY * screenHeight;
-
-    -- Keep button on screen
-    if buttonX + self:GetWidth() > screenWidth then
-        buttonX = screenWidth - self:GetWidth();
-    end
-    if buttonY + self:GetHeight() > screenHeight then
-        buttonY = screenHeight - self:GetHeight();
+    self.MouseLeave = function()
+        self:SetOpacity(Settings.buttonMinOpacity)
     end
 
-    self:SetPosition(buttonX, buttonY);
-    self:SetVisible(Settings.buttonVisible == 1);
-    self:SetOpacity(Settings.buttonMinOpacity);
-
-    -- Drag state tracking
-    local isMoving = false;
-    local hasMoved = false;
-    local buttonDownTime = 0;
-    local startX = 0;
-    local startY = 0;
-    local originalColor = Turbine.UI.Color(1.0, 1.0, 1.0, 1.0);
-
-    -- HOVER EFFECTS
-    self.MouseEnter = function(sender, args)
-        self:SetOpacity(Settings.buttonMaxOpacity);
-    end
-
-    self.MouseLeave = function(sender, args)
-        self:SetOpacity(Settings.buttonMinOpacity);
-    end
-
-    -- DRAG FUNCTIONALITY - MouseDown
     self.MouseDown = function(sender, args)
-        if (args.Button == Turbine.UI.MouseButton.Left) then
-            buttonDownTime = Turbine.Engine.GetGameTime();
-            isMoving = true;
-            hasMoved = false;
-            startX = args.X;
-            startY = args.Y;
+        if args.Button ~= Turbine.UI.MouseButton.Left then
+            return
         end
+
+        buttonDownTime = Turbine.Engine.GetGameTime()
+        isMoving = true
+        hasMoved = false
+        dragStartX = args.X
+        dragStartY = args.Y
     end
 
-    -- DRAG FUNCTIONALITY - MouseMove
     self.MouseMove = function(sender, args)
-        if (isMoving and
-            Turbine.Engine.GetGameTime() - buttonDownTime > BehaviorConstants.BUTTON_DRAG_DELAY) then
-            local dx = args.X - startX;
-            local dy = args.Y - startY;
-
-            if dx ~= 0 or dy ~= 0 then
-                hasMoved = true;
-
-                -- Visual feedback during drag (red tint)
-                self:SetBackColor(Turbine.UI.Color(1.0, 0.8, 0.8, 1.0));
-
-                local oldX, oldY = self:GetPosition();
-                self:SetPosition(oldX + dx, oldY + dy);
-            end
+        if not isMoving then
+            return
         end
+
+        local elapsed = Turbine.Engine.GetGameTime() - buttonDownTime
+        if elapsed <= BehaviorConstants.BUTTON_DRAG_DELAY then
+            return
+        end
+
+        local dx = args.X - dragStartX
+        local dy = args.Y - dragStartY
+        if dx == 0 and dy == 0 then
+            return
+        end
+
+        hasMoved = true
+        self:SetBackColor(DRAG_TINT)
+
+        local currentX, currentY = self:GetPosition()
+        local nextX = currentX + dx
+        local nextY = currentY + dy
+        nextX, nextY = ClampPositionToScreen(nextX, nextY, BUTTON_SIZE, BUTTON_SIZE)
+        self:SetPosition(nextX, nextY)
     end
 
-    -- DRAG FUNCTIONALITY & TOGGLE - MouseUp
     self.MouseUp = function(sender, args)
-        if (args.Button == Turbine.UI.MouseButton.Left) then
-            isMoving = false;
-
-            if (hasMoved) then
-                -- Save new position
-                local posX, posY = self:GetPosition();
-                local screenWidth, screenHeight = Turbine.UI.Display.GetSize();
-                Settings.buttonRelativeX = posX / screenWidth;
-                Settings.buttonRelativeY = posY / screenHeight;
-                SaveSettings();
-
-                -- Reset visual feedback
-                self:SetBackColor(originalColor);
-                hasMoved = false;
-
-                Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Button position saved</rgb>");
-            else
-                -- Toggle window (no drag occurred)
-                if missionWindow == nil then
-                    missionWindow = MissionWindow();
-                    Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Mission window created</rgb>");
-                end
-                local newState = not missionWindow:IsVisible();
-                missionWindow:SetVisible(newState);
-                Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Window " .. (newState and "shown" or "hidden") .. "</rgb>");
-                if newState and lastMissionInfo ~= nil then
-                    missionWindow:ShowMission(lastMissionInfo);
-                    Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Showing last accepted mission</rgb>");
-                end
-            end
-        elseif (args.Button == Turbine.UI.MouseButton.Right) then
-            -- Show context menu
+        if args.Button == Turbine.UI.MouseButton.Right then
             if self.contextMenu == nil then
-                self.contextMenu = MissionContextMenu(self);
+                self.contextMenu = MissionContextMenu(self)
             end
-            self.contextMenu:ShowMenu();
+            self.contextMenu:ShowMenu()
+            return
+        end
+
+        if args.Button ~= Turbine.UI.MouseButton.Left then
+            return
+        end
+
+        isMoving = false
+
+        if hasMoved then
+            SaveButtonPositionFromWindow(self)
+            self:SetBackColor(iconLoaded and ICON_TINT or FALLBACK_TINT)
+            hasMoved = false
+            Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Button position saved</rgb>")
+            return
+        end
+
+        EnsureMissionWindow()
+        local newState = not missionWindow:IsVisible()
+        missionWindow:SetVisible(newState)
+        Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Window " .. (newState and "shown" or "hidden") .. "</rgb>")
+
+        if newState and lastMissionInfo ~= nil then
+            missionWindow:ShowMission(lastMissionInfo)
+            Turbine.Shell.WriteLine("<rgb=#90EE90>MissionHelper: Showing last accepted mission</rgb>")
         end
     end
 end
