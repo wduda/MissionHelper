@@ -89,7 +89,10 @@ recentlyCompletedMission = {
 activeMissionRun = {
     missionName = nil,
     startedAtGameTime = 0,
-    isRunning = false
+    isRunning = false,
+    delvingDetected = false,
+    delvingTier = nil,
+    delvingGem = nil
 }
 
 local function TrimText(text)
@@ -354,6 +357,9 @@ function StartMissionRun(missionName)
     activeMissionRun.missionName = missionName
     activeMissionRun.startedAtGameTime = now
     activeMissionRun.isRunning = true
+    activeMissionRun.delvingDetected = false
+    activeMissionRun.delvingTier = nil
+    activeMissionRun.delvingGem = nil
     lastTimerUiSecond = -1
 
     if missionWindow ~= nil then
@@ -374,6 +380,9 @@ function StopMissionRunAndPersist(missionName)
     local durationSeconds = math.floor(math.max(0, now - activeMissionRun.startedAtGameTime))
 
     activeMissionRun.isRunning = false
+    activeMissionRun.delvingDetected = false
+    activeMissionRun.delvingTier = nil
+    activeMissionRun.delvingGem = nil
 
     if missionWindow ~= nil then
         missionWindow:SetLiveTimer(missionName, durationSeconds, false)
@@ -469,6 +478,82 @@ local function NormalizeMissionName(text)
     return TrimText(normalized)
 end
 
+local function IsValidDelvingGemForTier(tier, gemName)
+    if tier == nil or gemName == nil then
+        return false
+    end
+
+    local gem = string.lower(TrimText(gemName))
+    if tier >= 1 and tier <= 3 then
+        return gem == "zircon"
+    end
+    if tier >= 4 and tier <= 6 then
+        return gem == "garnet"
+    end
+    if tier >= 7 and tier <= 9 then
+        return gem == "emerald"
+    end
+    if tier >= 10 and tier <= 12 then
+        return gem == "amethyst"
+    end
+
+    return false
+end
+
+local function ParseDelvingTierQuestFromMessage(message)
+    local tierText, gemName = string.match(message, "^New Quest:%s*Tier%s*(%d+)%s*:%s*Delving%s+([A-Za-z]+)%s*$")
+    if tierText == nil then
+        tierText, gemName = string.match(message, "^New Quest:%s*Tier%s*(%d+)%s+Delving%s+([A-Za-z]+)%s*$")
+    end
+    if tierText == nil then
+        return nil
+    end
+
+    local tierNumber = tonumber(tierText)
+    if tierNumber == nil or tierNumber < 1 or tierNumber > 12 then
+        return nil
+    end
+
+    if not IsValidDelvingGemForTier(tierNumber, gemName) then
+        return nil
+    end
+
+    return {
+        tier = tierNumber,
+        gem = TrimText(gemName)
+    }
+end
+
+local function HandleDelvingTierQuestDetected(delvingInfo, chatType, message)
+    if not activeMissionRun.isRunning then
+        return false
+    end
+
+    activeMissionRun.isRunning = false
+    activeMissionRun.delvingDetected = true
+    activeMissionRun.delvingTier = delvingInfo.tier
+    activeMissionRun.delvingGem = delvingInfo.gem
+    lastTimerUiSecond = -1
+
+    if missionWindow ~= nil and activeMissionRun.missionName ~= nil then
+        missionWindow:SetDelvingTimerStopped(activeMissionRun.missionName)
+    end
+
+    DebugChatEvent(
+        "delving_tier_detected",
+        chatType,
+        message,
+        "mission=\"" .. EscapeDebugText(activeMissionRun.missionName) ..
+        "\" tier=" .. tostring(delvingInfo.tier) ..
+        " gem=\"" .. EscapeDebugText(delvingInfo.gem) .. "\""
+    )
+
+    Turbine.Shell.WriteLine("<rgb=#FFD700>MissionHelper: Delving tier detected for current run (Tier " ..
+        tostring(delvingInfo.tier) .. " " .. delvingInfo.gem .. "). Timer frozen at 00:00 and run excluded from stats.</rgb>")
+
+    return true
+end
+
 local function TryFinalizeFromCompletedCandidate(candidateMissionName, chatType, message)
     if chatType ~= Turbine.ChatType.Quest then
         DebugChatEvent(
@@ -481,6 +566,26 @@ local function TryFinalizeFromCompletedCandidate(candidateMissionName, chatType,
     end
 
     if not activeMissionRun.isRunning then
+        if activeMissionRun.delvingDetected and activeMissionRun.missionName ~= nil then
+            local candidateNormalized = NormalizeMissionName(candidateMissionName)
+            local activeNormalized = NormalizeMissionName(activeMissionRun.missionName)
+            if candidateNormalized == activeNormalized then
+                DebugChatEvent(
+                    "completion_ignored_delving_run",
+                    chatType,
+                    message,
+                    "mission=\"" .. EscapeDebugText(activeMissionRun.missionName) .. "\""
+                )
+                activeMissionRun.delvingDetected = false
+                activeMissionRun.delvingTier = nil
+                activeMissionRun.delvingGem = nil
+                activeMissionRun.missionName = nil
+                activeMissionRun.startedAtGameTime = 0
+                ResetCompletedCandidate()
+                return true
+            end
+        end
+
         DebugChatEvent(
             "completed_candidate_no_active_run",
             chatType,
@@ -556,6 +661,12 @@ function DetectMission(message, chatType)
 
     if IsMissionCompleteMessage(trimmedMessage) then
         DebugChatEvent("mission_complete_observed_noop", chatType, message)
+        return
+    end
+
+    local delvingInfo = ParseDelvingTierQuestFromMessage(message)
+    if delvingInfo ~= nil then
+        HandleDelvingTierQuestDetected(delvingInfo, chatType, message)
         return
     end
 

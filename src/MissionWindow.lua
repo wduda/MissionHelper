@@ -65,8 +65,12 @@ local function GetAccountBestDurationText(missionName)
     return FormatDurationMMSS(bestSeconds)
 end
 
-local function BuildTimerStatusText(isRunning, liveTimerMissionName, liveTimerElapsedSeconds, lastRunMissionName, lastRunDurationSeconds, missionName)
+local function BuildTimerStatusText(isRunning, liveTimerMissionName, liveTimerElapsedSeconds, lastRunMissionName, lastRunDurationSeconds, forcedZeroMissionName, missionName)
     local accountBestText = GetAccountBestDurationText(missionName)
+
+    if forcedZeroMissionName == missionName then
+        return "Run Time: 00:00 | PB: " .. accountBestText
+    end
 
     if isRunning and liveTimerMissionName == missionName then
         return "Run Time: " .. FormatDurationMMSS(liveTimerElapsedSeconds) .. " | PB: " .. accountBestText
@@ -138,6 +142,7 @@ function MissionWindow:Constructor()
     self.liveTimerIsRunning = false
     self.lastRunMissionName = nil
     self.lastRunDurationSeconds = nil
+    self.forcedZeroTimerMissionName = nil
 
     -- Header title label (drag handle)
     self.headerTitleLabel = Turbine.UI.Label()
@@ -246,6 +251,7 @@ function MissionWindow:SetLiveTimer(missionName, elapsedSeconds, isRunning)
     self.liveTimerMissionName = missionName
     self.liveTimerElapsedSeconds = tonumber(elapsedSeconds) or 0
     self.liveTimerIsRunning = (isRunning == true)
+    self.forcedZeroTimerMissionName = nil
 
     if not self.liveTimerIsRunning then
         self.lastRunMissionName = missionName
@@ -257,10 +263,24 @@ function MissionWindow:SetLiveTimer(missionName, elapsedSeconds, isRunning)
     end
 end
 
+function MissionWindow:SetDelvingTimerStopped(missionName)
+    self.liveTimerMissionName = missionName
+    self.liveTimerElapsedSeconds = 0
+    self.liveTimerIsRunning = false
+    self.lastRunMissionName = nil
+    self.lastRunDurationSeconds = nil
+    self.forcedZeroTimerMissionName = missionName
+
+    if self.currentMissionInfo ~= nil then
+        self:RenderMissionText()
+    end
+end
+
 function MissionWindow:ClearLiveTimer()
     self.liveTimerMissionName = nil
     self.liveTimerElapsedSeconds = 0
     self.liveTimerIsRunning = false
+    self.forcedZeroTimerMissionName = nil
 
     if self.currentMissionInfo ~= nil then
         self:RenderMissionText()
@@ -288,6 +308,7 @@ function MissionWindow:RenderMissionText()
             self.liveTimerElapsedSeconds,
             self.lastRunMissionName,
             self.lastRunDurationSeconds,
+            self.forcedZeroTimerMissionName,
             missionName
         )
     )
@@ -353,6 +374,7 @@ function MissionWindow:ShowMission(missionInfo)
         if previousMissionName ~= "" and incomingMissionName ~= previousMissionName then
             self.lastRunMissionName = nil
             self.lastRunDurationSeconds = nil
+            self.forcedZeroTimerMissionName = nil
         end
 
         self.currentMissionInfo = missionInfo
