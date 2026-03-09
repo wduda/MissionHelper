@@ -33,9 +33,17 @@ Date: 2026-03-09
 3. Implement `/loc` scan request flow in `src/Main.lua`
 - Add one-shot scan state (listening flag and optional timeout marker)
 - On scan request:
-  - mark scanner as listening
-  - execute `/loc` through a quickslot-compatible alias shortcut path
+  - mark scanner as listening from the scan quickslot click event
+  - execute locale-aware alias using a `Turbine.UI.Lotro.Quickslot` (DelvingDigest pattern):
+    - EN: `/loc`
+    - FR: `/emp`
+    - DE: `/pos`
 - In chat handler, if listening, parse localized `/loc` result line and extract server name
+
+Update (feedback, same task):
+- Replace previous direct command-execution attempt with a dedicated quickslot-based trigger bound to the `Scan` control
+- Keep the visual `Scan` button while overlaying a non-droppable alias quickslot that performs the actual command execution
+- Replace temporary `;loc` alias with the same locale-sensitive command selection used by DelvingDigest
 
 4. Port DelvingDigest-style malice-day calculation into `src/Main.lua`
 - Add a `GetMaliceDayForServer(serverName)` helper based on DelvingDigest `getVariant` behavior:

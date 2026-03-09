@@ -9,20 +9,26 @@ import "MissionHelper.src.SettingsManager"
 MissionWindow = class(Turbine.UI.Window)
 
 local WINDOW_WIDTH = 400
-local WINDOW_HEIGHT = 320
+local WINDOW_HEIGHT = 360
 local HEADER_PADDING_X = 10
 local HEADER_TITLE_Y = 8
 local CLOSE_SIZE = 12
 local CLOSE_X_OFFSET = 18
-local MISSION_ROW_Y = 30
-local TIMER_ROW_Y = 50
+local GLOBAL_ROW_ONE_Y = 32
+local GLOBAL_ROW_TWO_Y = 56
+local MISSION_ROW_Y = 90
+local TIMER_ROW_Y = 112
 local PREFIX_WIDTH = 110
-local CONTENT_Y = 74
+local CONTENT_Y = 138
 local CONTENT_BOTTOM_PADDING = 10
 local SCROLLBAR_WIDTH = 10
 local SCROLLBAR_GAP = 4
+local SCAN_BUTTON_WIDTH = 58
+local ACTION_BUTTON_WIDTH = 140
 local COLOR_RED = Turbine.UI.Color(1, 0.8, 0.2, 0.2)
 local COLOR_RED_HOVER = Turbine.UI.Color(1, 0.95, 0.3, 0.3)
+local COLOR_MALICE_HIGHLIGHT = Turbine.UI.Color.LightGreen
+local COLOR_MALICE_DEFAULT = Turbine.UI.Color.White
 
 local function TrimText(text)
     if text == nil then
@@ -143,6 +149,9 @@ function MissionWindow:Constructor()
     self.lastRunMissionName = nil
     self.lastRunDurationSeconds = nil
     self.forcedZeroTimerMissionName = nil
+    self.onScanRequested = nil
+    self.onSuggestMissionsRequested = nil
+    self.onSuggestDelvingsRequested = nil
 
     -- Header title label (drag handle)
     self.headerTitleLabel = Turbine.UI.Label()
@@ -200,6 +209,73 @@ function MissionWindow:Constructor()
         SaveSettings()
     end
 
+    self.maliceSetPrefixLabel = Turbine.UI.Label()
+    self.maliceSetPrefixLabel:SetParent(self)
+    self.maliceSetPrefixLabel:SetPosition(HEADER_PADDING_X, GLOBAL_ROW_ONE_Y)
+    self.maliceSetPrefixLabel:SetSize(80, 20)
+    self.maliceSetPrefixLabel:SetText("Malice Set:")
+    self.maliceSetPrefixLabel:SetFont(Turbine.UI.Lotro.Font.Verdana14)
+    self.maliceSetPrefixLabel:SetForeColor(Turbine.UI.Color.LightGray)
+
+    self.maliceSetValueLabel = Turbine.UI.Label()
+    self.maliceSetValueLabel:SetParent(self)
+    self.maliceSetValueLabel:SetPosition(HEADER_PADDING_X + 82, GLOBAL_ROW_ONE_Y)
+    self.maliceSetValueLabel:SetSize(40, 20)
+    self.maliceSetValueLabel:SetFont(Turbine.UI.Lotro.Font.Verdana14)
+    self.maliceSetValueLabel:SetForeColor(COLOR_MALICE_DEFAULT)
+    self.maliceSetValueLabel:SetText("5")
+
+    self.scanButton = Turbine.UI.Lotro.Button()
+    self.scanButton:SetParent(self)
+    self.scanButton:SetSize(SCAN_BUTTON_WIDTH, 20)
+    self.scanButton:SetPosition(WINDOW_WIDTH - HEADER_PADDING_X - SCAN_BUTTON_WIDTH, GLOBAL_ROW_ONE_Y)
+    self.scanButton:SetText("Scan")
+    self.scanButton.Click = function()
+        if type(self.onScanRequested) == "function" then
+            self.onScanRequested()
+        end
+    end
+
+    self.scanQuickslot = Turbine.UI.Lotro.Quickslot()
+    self.scanQuickslot:SetParent(self)
+    self.scanQuickslot:SetPosition(WINDOW_WIDTH - HEADER_PADDING_X - SCAN_BUTTON_WIDTH, GLOBAL_ROW_ONE_Y)
+    self.scanQuickslot:SetSize(SCAN_BUTTON_WIDTH, 20)
+    self.scanQuickslot:SetAllowDrop(false)
+    self.scanQuickslot:SetVisible(true)
+    self.scanQuickslot:SetOpacity(0.01)
+    self.scanQuickslot:SetZOrder(self.scanButton:GetZOrder() + 1)
+    self.scanQuickslot.MouseClick = function()
+        if type(self.onScanRequested) == "function" then
+            self.onScanRequested()
+        end
+    end
+    self:SetScanAlias("/loc")
+
+    self.suggestMissionsButton = Turbine.UI.Lotro.Button()
+    self.suggestMissionsButton:SetParent(self)
+    self.suggestMissionsButton:SetSize(ACTION_BUTTON_WIDTH, 22)
+    self.suggestMissionsButton:SetPosition(HEADER_PADDING_X, GLOBAL_ROW_TWO_Y)
+    self.suggestMissionsButton:SetText("Suggest Missions")
+    self.suggestMissionsButton.Click = function()
+        if type(self.onSuggestMissionsRequested) == "function" then
+            self.onSuggestMissionsRequested()
+        end
+    end
+
+    self.suggestDelvingsButton = Turbine.UI.Lotro.Button()
+    self.suggestDelvingsButton:SetParent(self)
+    self.suggestDelvingsButton:SetSize(ACTION_BUTTON_WIDTH, 22)
+    self.suggestDelvingsButton:SetPosition(
+        WINDOW_WIDTH - HEADER_PADDING_X - ACTION_BUTTON_WIDTH,
+        GLOBAL_ROW_TWO_Y
+    )
+    self.suggestDelvingsButton:SetText("Suggest Delvings")
+    self.suggestDelvingsButton.Click = function()
+        if type(self.onSuggestDelvingsRequested) == "function" then
+            self.onSuggestDelvingsRequested()
+        end
+    end
+
     -- Mission row
     self.currentMissionPrefixLabel = Turbine.UI.Label()
     self.currentMissionPrefixLabel:SetParent(self)
@@ -245,6 +321,56 @@ function MissionWindow:Constructor()
     self.helpTextScrollBar:SetPosition(HEADER_PADDING_X + contentWidth + SCROLLBAR_GAP, CONTENT_Y)
     self.helpTextScrollBar:SetSize(SCROLLBAR_WIDTH, contentHeight)
     self.helpTextBox:SetVerticalScrollBar(self.helpTextScrollBar)
+
+    self:SetMaliceDay(5)
+end
+
+function MissionWindow:SetScanRequestedCallback(callback)
+    self.onScanRequested = callback
+end
+
+function MissionWindow:SetScanAlias(aliasText)
+    if self.scanQuickslot == nil then
+        return
+    end
+
+    local text = TrimText(aliasText)
+    if text == "" then
+        text = "/loc"
+    end
+
+    local shortcut = Turbine.UI.Lotro.Shortcut(Turbine.UI.Lotro.ShortcutType.Alias, text)
+    if shortcut.SetData ~= nil then
+        shortcut:SetData(text)
+    end
+    self.scanQuickslot:SetShortcut(shortcut)
+end
+
+function MissionWindow:SetSuggestMissionsRequestedCallback(callback)
+    self.onSuggestMissionsRequested = callback
+end
+
+function MissionWindow:SetSuggestDelvingsRequestedCallback(callback)
+    self.onSuggestDelvingsRequested = callback
+end
+
+function MissionWindow:SetMaliceDay(dayNumber)
+    local parsedDay = tonumber(dayNumber)
+    if parsedDay == nil then
+        return
+    end
+
+    local renderedDay = math.floor(parsedDay)
+    if renderedDay < 1 then
+        renderedDay = 1
+    end
+
+    self.maliceSetValueLabel:SetText(tostring(renderedDay))
+    if renderedDay == 1 or renderedDay == 5 then
+        self.maliceSetValueLabel:SetForeColor(COLOR_MALICE_HIGHLIGHT)
+    else
+        self.maliceSetValueLabel:SetForeColor(COLOR_MALICE_DEFAULT)
+    end
 end
 
 function MissionWindow:SetLiveTimer(missionName, elapsedSeconds, isRunning)
