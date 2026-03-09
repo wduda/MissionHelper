@@ -5,8 +5,10 @@ import "Turbine.UI"
 import "MissionHelper.src.VindarPatch"
 import "MissionHelper.src.SettingsManager"
 import "MissionHelper.src.MissionData"
+import "MissionHelper.src.DelvingScheduleData"
 import "MissionHelper.src.MissionStatsManager"
 import "MissionHelper.src.MissionWindow"
+import "MissionHelper.src.SuggestMissionsWindow"
 import "MissionHelper.src.MissionButton"
 
 Plugin = Turbine.Plugin
@@ -114,11 +116,24 @@ local MALICE_SERVER_OFFSETS = {
     ["Grond"] = 5,
     ["Sting"] = 2
 }
+local MISSION_SERVER_OFFSETS = {
+    ["Default"] = {[4] = 0, [6] = 0, [7] = 0, [8] = 3},
+    ["Orcrist"] = {[4] = 7, [6] = 0, [7] = 3, [8] = 4},
+    ["Peregrin"] = {[4] = 3, [6] = 5, [7] = 2, [8] = 4},
+    ["Meriadoc"] = {[4] = 2, [6] = 2, [7] = 4, [8] = 4},
+    ["Glamdring"] = {[4] = 8, [6] = 1, [7] = 4, [8] = 0},
+    ["Angmar"] = {[4] = 8, [6] = 3, [7] = 4, [8] = 0},
+    ["Mordor"] = {[4] = 8, [6] = 3, [7] = 4, [8] = 0},
+    ["Treebeard"] = {[4] = 0, [6] = 4, [7] = 0, [8] = 0},
+    ["Grond"] = {[4] = 4, [6] = 1, [7] = 3, [8] = 1},
+    ["Sting"] = {[4] = 1, [6] = 1, [7] = 0, [8] = 2}
+}
 
 local pendingLocScan = {
     isListening = false,
     startedAtGameTime = 0
 }
+local currentDetectedServerName = "Default"
 
 local function TrimText(text)
     if text == nil then
@@ -442,6 +457,191 @@ local function CalculateCurrentMaliceDay(serverName)
     return shifted + 1
 end
 
+local function NormalizeMissionKey(name)
+    local key = string.lower(TrimText(name))
+    key = key:gsub("[^%w]", "")
+    return key
+end
+
+local function BuildMissionNameLookup()
+    local byNormalized = {}
+    if MissionData.GetAllMissionNames == nil then
+        return byNormalized
+    end
+
+    local missionNames = MissionData:GetAllMissionNames()
+    for _, missionName in ipairs(missionNames) do
+        byNormalized[NormalizeMissionKey(missionName)] = missionName
+    end
+
+    return byNormalized
+end
+
+local function GetServerMissionOffsets(serverName)
+    if serverName ~= nil and MISSION_SERVER_OFFSETS[serverName] ~= nil then
+        return MISSION_SERVER_OFFSETS[serverName]
+    end
+
+    return MISSION_SERVER_OFFSETS["Default"]
+end
+
+local function CalculateMissionCycleDay(areaIndex, areaDefinition, serverName)
+    if areaDefinition == nil then
+        return 1
+    end
+
+    local cycle = tonumber(areaDefinition.cycle) or 1
+    if cycle <= 1 then
+        return 1
+    end
+
+    local localTimeZone = GetLocalTimeZoneHours()
+    local serverUtcOffset = -5
+    if IsServerDST(Turbine.Engine:GetDate()) then
+        serverUtcOffset = -4
+    end
+
+    local timeZoneOffset = serverUtcOffset - localTimeZone
+    local serverEpoch = GetLocalEpochTime(Turbine.Engine:GetDate()) + (timeZoneOffset * 3600)
+    local adjustedEpoch = serverEpoch - MALICE_RESET_SECONDS
+    local daysSinceEpoch = math.floor(adjustedEpoch / 86400)
+
+    local cycleDayZeroBased = math.fmod(daysSinceEpoch, cycle)
+    if cycleDayZeroBased < 0 then
+        cycleDayZeroBased = cycleDayZeroBased + cycle
+    end
+
+    local serverOffsets = GetServerMissionOffsets(serverName)
+    local offsetForArea = tonumber(serverOffsets[areaIndex]) or 0
+    local shifted = cycleDayZeroBased + offsetForArea
+    while shifted >= cycle do
+        shifted = shifted - cycle
+    end
+    while shifted < 0 do
+        shifted = shifted + cycle
+    end
+
+    return shifted + 1
+end
+
+local function BuildGroupedMissionSuggestions(serverName)
+    local grouped = {}
+    local regionOrder = {}
+    local ddKnownMissionNameSet = {}
+    local missionLookup = BuildMissionNameLookup()
+
+    local function EnsureRegion(regionName)
+        local key = TrimText(regionName)
+        if key == "" then
+            key = "Unknown Region"
+        end
+
+        if grouped[key] == nil then
+            grouped[key] = { names = {}, nameSet = {} }
+            table.insert(regionOrder, key)
+        end
+
+        return grouped[key], key
+    end
+
+    local function AddMissionToRegion(regionName, missionName)
+        local mission = TrimText(missionName)
+        if mission == "" then
+            return
+        end
+
+        local bucket = EnsureRegion(regionName)
+        if bucket.nameSet[mission] == true then
+            return
+        end
+
+        bucket.nameSet[mission] = true
+        table.insert(bucket.names, mission)
+    end
+
+    for id, ddMissionName in pairs(DelvingScheduleData.MissionIdToName) do
+        local key = NormalizeMissionKey(ddMissionName)
+        ddKnownMissionNameSet[key] = true
+    end
+
+    for areaIndex, areaDefinition in pairs(DelvingScheduleData.Areas) do
+        local areaName = areaDefinition.name or ("Area " .. tostring(areaIndex))
+        local cycleDay = CalculateMissionCycleDay(areaIndex, areaDefinition, serverName)
+        local dayVariant = areaDefinition.dayMap[cycleDay] or 1
+
+        local areaGroups = DelvingScheduleData.Groups[areaIndex]
+        if areaGroups ~= nil then
+            for _, npcGroups in pairs(areaGroups) do
+                local missionIds = npcGroups[dayVariant]
+                if missionIds ~= nil then
+                    for _, missionId in ipairs(missionIds) do
+                        local ddMissionName = DelvingScheduleData.MissionIdToName[missionId]
+                        if ddMissionName ~= nil then
+                            local canonical = missionLookup[NormalizeMissionKey(ddMissionName)] or ddMissionName
+                            AddMissionToRegion(areaName, canonical)
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    if MissionData.GetAllMissionNames ~= nil then
+        local allMissionNames = MissionData:GetAllMissionNames()
+        for _, missionName in ipairs(allMissionNames) do
+            local key = NormalizeMissionKey(missionName)
+            if ddKnownMissionNameSet[key] ~= true then
+                local missionInfo = MissionData:GetMissionInfo(missionName)
+                local regionName = "Unknown Region"
+                if missionInfo ~= nil then
+                    local locationName = TrimText(missionInfo.location)
+                    if locationName ~= "" then
+                        regionName = locationName
+                    end
+                end
+                AddMissionToRegion(regionName, missionName)
+            end
+        end
+    end
+
+    table.sort(regionOrder, function(a, b)
+        return string.lower(a) < string.lower(b)
+    end)
+
+    local lines = {}
+    for _, regionName in ipairs(regionOrder) do
+        local bucket = grouped[regionName]
+        table.sort(bucket.names, function(a, b)
+            return string.lower(a) < string.lower(b)
+        end)
+
+        table.insert(lines, regionName .. ":")
+        for _, missionName in ipairs(bucket.names) do
+            table.insert(lines, "  - " .. missionName)
+        end
+        table.insert(lines, "")
+    end
+
+    return table.concat(lines, "\n")
+end
+
+local function ShowMissionSuggestions()
+    if suggestMissionsWindow == nil then
+        suggestMissionsWindow = SuggestMissionsWindow()
+    end
+
+    local serverName = currentDetectedServerName
+    if serverName == nil or serverName == "" then
+        serverName = "Default"
+    end
+
+    local text = BuildGroupedMissionSuggestions(serverName)
+    if TrimText(text) == "" then
+        text = "No mission suggestions available."
+    end
+    suggestMissionsWindow:ShowSuggestions("Server: " .. serverName, text)
+end
+
 local function StartLocScan()
     pendingLocScan.isListening = true
     pendingLocScan.startedAtGameTime = Turbine.Engine.GetGameTime()
@@ -468,6 +668,8 @@ local function HandleLocScanChatMessage(message, chatType)
     end
 
     pendingLocScan.isListening = false
+
+    currentDetectedServerName = serverName
 
     local maliceDay = CalculateCurrentMaliceDay(serverName)
     if missionWindow ~= nil then
@@ -1119,7 +1321,7 @@ function PluginLoad(_sender, _args)
         StartLocScan()
     end)
     missionWindow:SetSuggestMissionsRequestedCallback(function()
-        return
+        ShowMissionSuggestions()
     end)
     missionWindow:SetSuggestDelvingsRequestedCallback(function()
         return
@@ -1153,6 +1355,11 @@ function PluginUnload(sender, args)
     if missionButton then
         missionButton:SetVisible(false)
         missionButton = nil
+    end
+
+    if suggestMissionsWindow then
+        suggestMissionsWindow:SetVisible(false)
+        suggestMissionsWindow = nil
     end
 
     Turbine.Shell.WriteLine("<rgb=#DAA520>MissionHelper unloaded</rgb>")

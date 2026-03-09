@@ -26,6 +26,7 @@ Date: 2026-03-09
 - Map scheduled mission IDs to mission names
 - Build result buckets grouped by region
 - Add fallback bucket entries for missions in MissionHelper data but missing from DelvingDigest mapping, marked as always available in their known region
+  - Use MissionHelper CSV `Location` (persisted into `MissionData`) as the fallback region source
 
 4. Add Suggest Missions window UI
 - Implement a separate LOTRO window class that:

@@ -171,8 +171,11 @@ foreach ($row in $rows) {
     $timeRange = Build-TimeRange -A $secondsA -B $secondsB
     $timeAssessment = if ($row.'Time Assessment') { $row.'Time Assessment'.Trim() } else { "" }
 
+    $location = if ($row.Location) { $row.Location.Trim() } else { "" }
+
     $missions[$name] = @{
         name = $name
+        location = $location
         objectives = $details
         missionDescription = $missionDescription
         tacticalAdvice = if ($row.Advice) { $row.Advice.Trim() } else { "" }
@@ -196,13 +199,14 @@ $builder = New-Object System.Text.StringBuilder
 [void]$builder.AppendLine("MissionData = {}")
 [void]$builder.AppendLine("")
 [void]$builder.AppendLine("-- Mission database: localized mission name as key")
-[void]$builder.AppendLine("-- Structure: { name, objectives, missionDescription, tacticalAdvice, bugs, delvingEnabled, difficulty, difficultyDetails, timeRange, timeAssessment }")
+[void]$builder.AppendLine("-- Structure: { name, location, objectives, missionDescription, tacticalAdvice, bugs, delvingEnabled, difficulty, difficultyDetails, timeRange, timeAssessment }")
 [void]$builder.AppendLine("MissionData.Missions = {")
 
 foreach ($name in $orderedNames) {
     $m = $missions[$name]
     [void]$builder.AppendLine("    [`"$(Escape-LuaString $name)`"] = {")
     [void]$builder.AppendLine("        name = `"$(Escape-LuaString $m.name)`",")
+    [void]$builder.AppendLine("        location = `"$(Escape-LuaString $m.location)`",")
     [void]$builder.AppendLine("        objectives = `"$(Escape-LuaString $m.objectives)`",")
     [void]$builder.AppendLine("        missionDescription = `"$(Escape-LuaString $m.missionDescription)`",")
     [void]$builder.AppendLine("        tacticalAdvice = `"$(Escape-LuaString $m.tacticalAdvice)`",")
@@ -231,6 +235,15 @@ foreach ($name in $orderedNames) {
 [void]$builder.AppendLine("        count = count + 1")
 [void]$builder.AppendLine("    end")
 [void]$builder.AppendLine("    return count")
+[void]$builder.AppendLine("end")
+[void]$builder.AppendLine("")
+[void]$builder.AppendLine("function MissionData:GetAllMissionNames()")
+[void]$builder.AppendLine("    local names = {}")
+[void]$builder.AppendLine("    for missionName in pairs(self.Missions) do")
+[void]$builder.AppendLine("        table.insert(names, missionName)")
+[void]$builder.AppendLine("    end")
+[void]$builder.AppendLine("    table.sort(names)")
+[void]$builder.AppendLine("    return names")
 [void]$builder.AppendLine("end")
 
 $utf8NoBom = New-Object System.Text.UTF8Encoding($false)

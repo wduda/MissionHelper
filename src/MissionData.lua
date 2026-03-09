@@ -6,10 +6,11 @@ import "Turbine"
 MissionData = {}
 
 -- Mission database: localized mission name as key
--- Structure: { name, objectives, missionDescription, tacticalAdvice, bugs, delvingEnabled, difficulty, difficultyDetails, timeRange, timeAssessment }
+-- Structure: { name, location, objectives, missionDescription, tacticalAdvice, bugs, delvingEnabled, difficulty, difficultyDetails, timeRange, timeAssessment }
 MissionData.Missions = {
     ["A Chill on the Gladdenmere"] = {
         name = "A Chill on the Gladdenmere",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -22,6 +23,7 @@ MissionData.Missions = {
     },
     ["A Cleansing Fire"] = {
         name = "A Cleansing Fire",
+        location = "Kighân Zajâna",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -34,6 +36,7 @@ MissionData.Missions = {
     },
     ["A Cut Above"] = {
         name = "A Cut Above",
+        location = "The Bloody Eagle Tavern",
         objectives = "Kill 8 deck-hands, 10 look-outs, 3 brutes, then boss",
         missionDescription = "Kill 8 deck-hands, 10 look-outs, 3 brutes, then boss",
         tacticalAdvice = "The path through the Corsair camp is mostly West and South, and slightly up the hill.\\nThere are stealthed Corsair Cutthroats along the path.\\nGroup mobs and AoE them down. \\nGhasaphâr spawns at [20.2S, 110.2W]\\nThe scout will appear at roughly the same location.",
@@ -46,6 +49,7 @@ MissionData.Missions = {
     },
     ["A Dark Treasure"] = {
         name = "A Dark Treasure",
+        location = "The Bloody Eagle Tavern",
         objectives = "Kill 12 corsairs, collect treasure, kill boss",
         missionDescription = "Kill 12 corsairs, collect treasure, kill boss",
         tacticalAdvice = "Group mobs and AoE down. There are more mobs than needed. Ignore mobs on lowest beach. Head south. Boss counts as one of the 12. Three spirits spawn when you approach treasure.",
@@ -58,6 +62,7 @@ MissionData.Missions = {
     },
     ["A Day on the Farm"] = {
         name = "A Day on the Farm",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "First part is easy, single mob pulls. When you click final burrow, crebain spawn, so you get 3 crebain + 1 shrew. Must kill 3 more sets of 3 crebain.",
@@ -70,6 +75,7 @@ MissionData.Missions = {
     },
     ["A Frosty Reception"] = {
         name = "A Frosty Reception",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -82,6 +88,7 @@ MissionData.Missions = {
     },
     ["A Glutton in the Larder"] = {
         name = "A Glutton in the Larder",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -94,6 +101,7 @@ MissionData.Missions = {
     },
     ["A Hearty Meal"] = {
         name = "A Hearty Meal",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -106,6 +114,7 @@ MissionData.Missions = {
     },
     ["A Large Problem"] = {
         name = "A Large Problem",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -118,6 +127,7 @@ MissionData.Missions = {
     },
     ["A Life's Work"] = {
         name = "A Life's Work",
+        location = "The Bloody Eagle Tavern",
         objectives = "Collect 10 research papers,destroy 8 gredbyg nests, kill boss",
         missionDescription = "Collect 10 research papers,destroy 8 gredbyg nests, kill boss",
         tacticalAdvice = "Ignore initial rockworms. Group gredbyg and click things. You can outrun many gredbyg to get clickables faster. Some gredbyg don't aggro.",
@@ -130,6 +140,7 @@ MissionData.Missions = {
     },
     ["A Looming Collapse"] = {
         name = "A Looming Collapse",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Must collect 10 bombs and 10 crates (While not required, you're forced to kill almost everything in the dungeon to do this.)",
@@ -142,6 +153,7 @@ MissionData.Missions = {
     },
     ["A Lost Expedition"] = {
         name = "A Lost Expedition",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Lost",
@@ -154,6 +166,7 @@ MissionData.Missions = {
     },
     ["A Moment of Hope"] = {
         name = "A Moment of Hope",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -166,6 +179,7 @@ MissionData.Missions = {
     },
     ["A Natural Disaster"] = {
         name = "A Natural Disaster",
+        location = "The Bloody Eagle Tavern",
         objectives = "Kill 8 huorns and 6 wildwoods, then boss",
         missionDescription = "Kill 8 huorns and 6 wildwoods, then boss\\n\\nThe most tedious new mission, too similar to daily.",
         tacticalAdvice = "Group mobs and AoE down. It can be easy to miss a mob at start and have to backtrack. Boss spawns at back. Scout spawns closer to entrance.",
@@ -178,6 +192,7 @@ MissionData.Missions = {
     },
     ["A New Clutch"] = {
         name = "A New Clutch",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -190,6 +205,7 @@ MissionData.Missions = {
     },
     ["A Personal Plea"] = {
         name = "A Personal Plea",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -202,6 +218,7 @@ MissionData.Missions = {
     },
     ["A Plague of Men"] = {
         name = "A Plague of Men",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Lots of pathers, can get bad pulls if not careful. Can pull some single pathers.",
@@ -214,6 +231,7 @@ MissionData.Missions = {
     },
     ["A Surfeit of Weapons"] = {
         name = "A Surfeit of Weapons",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -226,6 +244,7 @@ MissionData.Missions = {
     },
     ["A Taste for Battle"] = {
         name = "A Taste for Battle",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -238,6 +257,7 @@ MissionData.Missions = {
     },
     ["A Taste for Crab"] = {
         name = "A Taste for Crab",
+        location = "The Bloody Eagle Tavern",
         objectives = "Kill crabs, click nets, kill boss",
         missionDescription = "Kill crabs, click nets, kill boss",
         tacticalAdvice = "Group mobs and AoE down.",
@@ -250,6 +270,7 @@ MissionData.Missions = {
     },
     ["Abandoned Supplies"] = {
         name = "Abandoned Supplies",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -262,6 +283,7 @@ MissionData.Missions = {
     },
     ["Aberrations of Nature"] = {
         name = "Aberrations of Nature",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill 15 wood trolls. No extra mobs. 1-2 per pull, but can pull additional. Scout in centre.",
@@ -274,6 +296,7 @@ MissionData.Missions = {
     },
     ["Aiding the Bridge Builders"] = {
         name = "Aiding the Bridge Builders",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Defend timer",
@@ -286,6 +309,7 @@ MissionData.Missions = {
     },
     ["All Out Battle"] = {
         name = "All Out Battle",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -298,6 +322,7 @@ MissionData.Missions = {
     },
     ["Among the Watch-towers"] = {
         name = "Among the Watch-towers",
+        location = "Clegur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Burn towers, must kill mobs around them.",
@@ -310,6 +335,7 @@ MissionData.Missions = {
     },
     ["An Agelong Theft"] = {
         name = "An Agelong Theft",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -322,6 +348,7 @@ MissionData.Missions = {
     },
     ["An Assault of Frost"] = {
         name = "An Assault of Frost",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -334,6 +361,7 @@ MissionData.Missions = {
     },
     ["An Explosive Assault"] = {
         name = "An Explosive Assault",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -346,6 +374,7 @@ MissionData.Missions = {
     },
     ["An Infestation of Crabs"] = {
         name = "An Infestation of Crabs",
+        location = "The Bloody Eagle Tavern",
         objectives = "Kill 18 crabs, repair 10 leaks, then kill 2 great crabs",
         missionDescription = "Kill 18 crabs, repair 10 leaks, then kill 2 great crabs\\n\\nBugs make this one to avoid.",
         tacticalAdvice = "Group mobs and AoE down.",
@@ -358,6 +387,7 @@ MissionData.Missions = {
     },
     ["Another Man's Treasure"] = {
         name = "Another Man's Treasure",
+        location = "Kighân Zajâna",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -370,6 +400,7 @@ MissionData.Missions = {
     },
     ["Archers at the Gate"] = {
         name = "Archers at the Gate",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -382,6 +413,7 @@ MissionData.Missions = {
     },
     ["Area of Interest"] = {
         name = "Area of Interest",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -394,6 +426,7 @@ MissionData.Missions = {
     },
     ["Arms Saboteur"] = {
         name = "Arms Saboteur",
+        location = "Ahâba",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -406,6 +439,7 @@ MissionData.Missions = {
     },
     ["Assault on Ashmâr-zarakh"] = {
         name = "Assault on Ashmâr-zarakh",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -418,6 +452,7 @@ MissionData.Missions = {
     },
     ["Assault on Dûn Traikh"] = {
         name = "Assault on Dûn Traikh",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -430,6 +465,7 @@ MissionData.Missions = {
     },
     ["Assault on Khetsok"] = {
         name = "Assault on Khetsok",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -442,6 +478,7 @@ MissionData.Missions = {
     },
     ["Assault on Trestlebridge"] = {
         name = "Assault on Trestlebridge",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -454,6 +491,7 @@ MissionData.Missions = {
     },
     ["Attack on Cotfast"] = {
         name = "Attack on Cotfast",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -466,6 +504,7 @@ MissionData.Missions = {
     },
     ["Beasts From the Hills"] = {
         name = "Beasts From the Hills",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -478,6 +517,7 @@ MissionData.Missions = {
     },
     ["Becoming a Thorn"] = {
         name = "Becoming a Thorn",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -490,6 +530,7 @@ MissionData.Missions = {
     },
     ["Before They Bond"] = {
         name = "Before They Bond",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill 16 wolf-keepers, but they come with a wolf each, so it's 32 mobs. Very easy to get multiple pulls. Pathing mobs.",
@@ -502,6 +543,7 @@ MissionData.Missions = {
     },
     ["Bite the Hand"] = {
         name = "Bite the Hand",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "2 mobs per pull, mobs don't spawn new mobs on kill. Puddle does small damage.",
@@ -514,6 +556,7 @@ MissionData.Missions = {
     },
     ["Blight in the Bite"] = {
         name = "Blight in the Bite",
+        location = "Sul Madásh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -526,6 +569,7 @@ MissionData.Missions = {
     },
     ["Blockade at Glimmerdeep"] = {
         name = "Blockade at Glimmerdeep",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -538,6 +582,7 @@ MissionData.Missions = {
     },
     ["Blockade on the High Pass"] = {
         name = "Blockade on the High Pass",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -550,6 +595,7 @@ MissionData.Missions = {
     },
     ["Bound for Torment"] = {
         name = "Bound for Torment",
+        location = "Jiret-menêsh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -562,6 +608,7 @@ MissionData.Missions = {
     },
     ["Breaking Bekâr-zarakh"] = {
         name = "Breaking Bekâr-zarakh",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -574,6 +621,7 @@ MissionData.Missions = {
     },
     ["Breeders of Beasts"] = {
         name = "Breeders of Beasts",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -586,6 +634,7 @@ MissionData.Missions = {
     },
     ["Brigands in Nímbarth"] = {
         name = "Brigands in Nímbarth",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Can pull multiple sets easily, pathers, can get a lot of mobs.",
@@ -598,6 +647,7 @@ MissionData.Missions = {
     },
     ["Brooding in the Depths"] = {
         name = "Brooding in the Depths",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -610,6 +660,7 @@ MissionData.Missions = {
     },
     ["Buried but Not Forgotten"] = {
         name = "Buried but Not Forgotten",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -622,6 +673,7 @@ MissionData.Missions = {
     },
     ["Burrowers by the Hadhodiant"] = {
         name = "Burrowers by the Hadhodiant",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -634,6 +686,7 @@ MissionData.Missions = {
     },
     ["Captive Wings"] = {
         name = "Captive Wings",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -646,6 +699,7 @@ MissionData.Missions = {
     },
     ["Caranost Command Post"] = {
         name = "Caranost Command Post",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill orcs and boss. Boss is either in ruins on left or ruins down on right (it's random). More mobs than necessary. Can get bad first pull if not careful.",
@@ -658,6 +712,7 @@ MissionData.Missions = {
     },
     ["Caranost Courtyard"] = {
         name = "Caranost Courtyard",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill all orcs in courtyard. 3 pulls of 3 mobs, plus pathers. Difficulty depends on pull.",
@@ -670,6 +725,7 @@ MissionData.Missions = {
     },
     ["Cave In!"] = {
         name = "Cave In!",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -682,6 +738,7 @@ MissionData.Missions = {
     },
     ["Chickens Home to Roost"] = {
         name = "Chickens Home to Roost",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -694,6 +751,7 @@ MissionData.Missions = {
     },
     ["Chopping the Woods"] = {
         name = "Chopping the Woods",
+        location = "Kighân Zajâna",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -706,6 +764,7 @@ MissionData.Missions = {
     },
     ["Claws of Gabilshathûr"] = {
         name = "Claws of Gabilshathûr",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -718,6 +777,7 @@ MissionData.Missions = {
     },
     ["Cleansing the Rotten Wood"] = {
         name = "Cleansing the Rotten Wood",
+        location = "Sul Madásh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -730,6 +790,7 @@ MissionData.Missions = {
     },
     ["Clearing a Path"] = {
         name = "Clearing a Path",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -742,6 +803,7 @@ MissionData.Missions = {
     },
     ["Clearing the Southern Road"] = {
         name = "Clearing the Southern Road",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -754,6 +816,7 @@ MissionData.Missions = {
     },
     ["Collapsing the Old Paths"] = {
         name = "Collapsing the Old Paths",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -766,6 +829,7 @@ MissionData.Missions = {
     },
     ["Counterattack at Wrackwade"] = {
         name = "Counterattack at Wrackwade",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -778,6 +842,7 @@ MissionData.Missions = {
     },
     ["Crown of Caranost"] = {
         name = "Crown of Caranost",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Find and kill boss (Dargund). He can be in multiple locations (up and down to right). Scout spawns where mob does. Tracking helps.",
@@ -790,6 +855,7 @@ MissionData.Missions = {
     },
     ["Crystal Conundrum"] = {
         name = "Crystal Conundrum",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -802,6 +868,7 @@ MissionData.Missions = {
     },
     ["Culling the Rot"] = {
         name = "Culling the Rot",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -814,6 +881,7 @@ MissionData.Missions = {
     },
     ["Dangerous Deliveries"] = {
         name = "Dangerous Deliveries",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Deliver 2 pies (quest/pie is a lie), kill 4-5 pulls of brigands, 15 total, 3-4 per pull. Can be hard to move around on platforms.",
@@ -826,6 +894,7 @@ MissionData.Missions = {
     },
     ["Darkness in the Mist"] = {
         name = "Darkness in the Mist",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Defend",
@@ -838,6 +907,7 @@ MissionData.Missions = {
     },
     ["Defence of the Elderwell"] = {
         name = "Defence of the Elderwell",
+        location = "Sul Madásh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -850,6 +920,7 @@ MissionData.Missions = {
     },
     ["Defend the River"] = {
         name = "Defend the River",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -862,6 +933,7 @@ MissionData.Missions = {
     },
     ["Defilers in the Dale"] = {
         name = "Defilers in the Dale",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -874,6 +946,7 @@ MissionData.Missions = {
     },
     ["Den of the Frost-bound"] = {
         name = "Den of the Frost-bound",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -886,6 +959,7 @@ MissionData.Missions = {
     },
     ["Deny Their Venom"] = {
         name = "Deny Their Venom",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -898,6 +972,7 @@ MissionData.Missions = {
     },
     ["Disrupting Control"] = {
         name = "Disrupting Control",
+        location = "Ahâba",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -910,6 +985,7 @@ MissionData.Missions = {
     },
     ["Dourhands in the Deep"] = {
         name = "Dourhands in the Deep",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -922,6 +998,7 @@ MissionData.Missions = {
     },
     ["Down on the Farm"] = {
         name = "Down on the Farm",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Looks like you can get single pulls, but there are pathers and stealthed mobs, can end up with very large pulls. At end, boss paths, then runs to house and summons 3 waves of 3 adds before he engages (seemed almost broken). Can be cheated if you can one-shot boss.",
@@ -934,6 +1011,7 @@ MissionData.Missions = {
     },
     ["Drakes Up Above"] = {
         name = "Drakes Up Above",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -946,6 +1024,7 @@ MissionData.Missions = {
     },
     ["Drive a Wedge"] = {
         name = "Drive a Wedge",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -958,6 +1037,7 @@ MissionData.Missions = {
     },
     ["Dulling the Weapons of War"] = {
         name = "Dulling the Weapons of War",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -970,6 +1050,7 @@ MissionData.Missions = {
     },
     ["Emissary at the Goblin-gate"] = {
         name = "Emissary at the Goblin-gate",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -982,6 +1063,7 @@ MissionData.Missions = {
     },
     ["Enemies at the East-gate"] = {
         name = "Enemies at the East-gate",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -994,6 +1076,7 @@ MissionData.Missions = {
     },
     ["Engines of Flesh and Stone"] = {
         name = "Engines of Flesh and Stone",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1006,6 +1089,7 @@ MissionData.Missions = {
     },
     ["Everything Goes Boom"] = {
         name = "Everything Goes Boom",
+        location = "Kighân Zajâna",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1018,6 +1102,7 @@ MissionData.Missions = {
     },
     ["Eviction Notice"] = {
         name = "Eviction Notice",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1030,6 +1115,7 @@ MissionData.Missions = {
     },
     ["Eyes on Elderslade"] = {
         name = "Eyes on Elderslade",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1042,6 +1128,7 @@ MissionData.Missions = {
     },
     ["Fashionable Thievery"] = {
         name = "Fashionable Thievery",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1054,6 +1141,7 @@ MissionData.Missions = {
     },
     ["Fell Summoning"] = {
         name = "Fell Summoning",
+        location = "Ahâba",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1066,6 +1154,7 @@ MissionData.Missions = {
     },
     ["Frosty Reception"] = {
         name = "Frosty Reception",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1078,6 +1167,7 @@ MissionData.Missions = {
     },
     ["Goblins at Stramvárth"] = {
         name = "Goblins at Stramvárth",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1090,6 +1180,7 @@ MissionData.Missions = {
     },
     ["Gold Rush"] = {
         name = "Gold Rush",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1102,6 +1193,7 @@ MissionData.Missions = {
     },
     ["Hall of Ice"] = {
         name = "Hall of Ice",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1114,6 +1206,7 @@ MissionData.Missions = {
     },
     ["Halls of the Dead"] = {
         name = "Halls of the Dead",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1126,6 +1219,7 @@ MissionData.Missions = {
     },
     ["Halting the Dourhands"] = {
         name = "Halting the Dourhands",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1138,6 +1232,7 @@ MissionData.Missions = {
     },
     ["Haunting at Dol Ernil"] = {
         name = "Haunting at Dol Ernil",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Can pull multiple sets, lots of mobs. Kill gauntmen first.",
@@ -1150,6 +1245,7 @@ MissionData.Missions = {
     },
     ["Havoc in Eshadûr"] = {
         name = "Havoc in Eshadûr",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1162,6 +1258,7 @@ MissionData.Missions = {
     },
     ["Hunting the Hunters"] = {
         name = "Hunting the Hunters",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1174,6 +1271,7 @@ MissionData.Missions = {
     },
     ["Idols of Corruption"] = {
         name = "Idols of Corruption",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1186,6 +1284,7 @@ MissionData.Missions = {
     },
     ["In Need of Rescue"] = {
         name = "In Need of Rescue",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1198,6 +1297,7 @@ MissionData.Missions = {
     },
     ["In the Trenches"] = {
         name = "In the Trenches",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1210,6 +1310,7 @@ MissionData.Missions = {
     },
     ["Into the Crystal Tunnels"] = {
         name = "Into the Crystal Tunnels",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1222,6 +1323,7 @@ MissionData.Missions = {
     },
     ["Into the Pits"] = {
         name = "Into the Pits",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill wargs and 3 boss. 3 per pull. More wargs than necessary. Bosses don't count as wargs.",
@@ -1234,6 +1336,7 @@ MissionData.Missions = {
     },
     ["Invaders on the Delf"] = {
         name = "Invaders on the Delf",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Two locations, kill mobs and collect things, then return to middle.",
@@ -1246,6 +1349,7 @@ MissionData.Missions = {
     },
     ["Invasion at the Redhorn Pass"] = {
         name = "Invasion at the Redhorn Pass",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1258,6 +1362,7 @@ MissionData.Missions = {
     },
     ["Jaws of the Dead"] = {
         name = "Jaws of the Dead",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1270,6 +1375,7 @@ MissionData.Missions = {
     },
     ["Jorthkyn and Hounds"] = {
         name = "Jorthkyn and Hounds",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill 8 Jorthkyn AND their hounds (scout won't appear until then). They come with hounds. 2 mobs per pull. After final Jorthkyn, scout spawns on top and you can leave. Can avoid some hounds/summons if you focus Jorthkyn.",
@@ -1282,6 +1388,7 @@ MissionData.Missions = {
     },
     ["Just Beyond Reach"] = {
         name = "Just Beyond Reach",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1294,6 +1401,7 @@ MissionData.Missions = {
     },
     ["Keepers of the Narrow Way"] = {
         name = "Keepers of the Narrow Way",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1306,6 +1414,7 @@ MissionData.Missions = {
     },
     ["Kergrim on the Road"] = {
         name = "Kergrim on the Road",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1318,6 +1427,7 @@ MissionData.Missions = {
     },
     ["Kill It with Fire"] = {
         name = "Kill It with Fire",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1330,6 +1440,7 @@ MissionData.Missions = {
     },
     ["King of Claws"] = {
         name = "King of Claws",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1342,6 +1453,7 @@ MissionData.Missions = {
     },
     ["Lay to Rest"] = {
         name = "Lay to Rest",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1354,6 +1466,7 @@ MissionData.Missions = {
     },
     ["Leadership Direction"] = {
         name = "Leadership Direction",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill mobs and boss. Boss can spawn in multiple locations (centre, south ruins). Boss greenbars twice, resets twice, and summons extra waves of adds. Potentially more difficult on other variants, as uruks don't summon on death in Variant B (bug?).",
@@ -1366,6 +1479,7 @@ MissionData.Missions = {
     },
     ["Locked Down"] = {
         name = "Locked Down",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill mobs and collect crates and keys to unlock doors.",
@@ -1378,6 +1492,7 @@ MissionData.Missions = {
     },
     ["Looting the Supplies"] = {
         name = "Looting the Supplies",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1390,6 +1505,7 @@ MissionData.Missions = {
     },
     ["Magic of the Frost-bound"] = {
         name = "Magic of the Frost-bound",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1402,6 +1518,7 @@ MissionData.Missions = {
     },
     ["Mother of Wolves"] = {
         name = "Mother of Wolves",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill 15 wolves and 1 boss. Can get a bad pull of two waves. Waves are 2-3 mobs. Must kill all mobs.",
@@ -1414,6 +1531,7 @@ MissionData.Missions = {
     },
     ["Natural Prey"] = {
         name = "Natural Prey",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1426,6 +1544,7 @@ MissionData.Missions = {
     },
     ["Nests of Ice"] = {
         name = "Nests of Ice",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1438,6 +1557,7 @@ MissionData.Missions = {
     },
     ["Not as Many Heads"] = {
         name = "Not as Many Heads",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill 15 brigands, 2 lieutenants and boss.",
@@ -1450,6 +1570,7 @@ MissionData.Missions = {
     },
     ["Oh, Rats"] = {
         name = "Oh, Rats",
+        location = "Sul Madásh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1462,6 +1583,7 @@ MissionData.Missions = {
     },
     ["Orders from the Highest"] = {
         name = "Orders from the Highest",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1474,6 +1596,7 @@ MissionData.Missions = {
     },
     ["Ore Overflowing"] = {
         name = "Ore Overflowing",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1486,6 +1609,7 @@ MissionData.Missions = {
     },
     ["Outlaws in Irídir"] = {
         name = "Outlaws in Irídir",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1498,6 +1622,7 @@ MissionData.Missions = {
     },
     ["Patrol the Township"] = {
         name = "Patrol the Township",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Must approach cats with rings on to patrol locations, spawns mobs, also pathers, can get swarmed with mobs. Must kill all for scout to spawn.",
@@ -1510,6 +1635,7 @@ MissionData.Missions = {
     },
     ["Perversion of Nature"] = {
         name = "Perversion of Nature",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1522,6 +1648,7 @@ MissionData.Missions = {
     },
     ["Protecting the Sea Lanes"] = {
         name = "Protecting the Sea Lanes",
+        location = "The Bloody Eagle Tavern",
         objectives = "Heal X crewmates, kill X corsairs",
         missionDescription = "Heal X crewmates, kill X corsairs",
         tacticalAdvice = "Group mobs and AoE down.",
@@ -1534,6 +1661,7 @@ MissionData.Missions = {
     },
     ["Prowling Scavengers"] = {
         name = "Prowling Scavengers",
+        location = "Sul Madásh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1546,6 +1674,7 @@ MissionData.Missions = {
     },
     ["Raging Frost"] = {
         name = "Raging Frost",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Junk",
@@ -1558,6 +1687,7 @@ MissionData.Missions = {
     },
     ["Raiders From Gundabad"] = {
         name = "Raiders From Gundabad",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "defend timer",
@@ -1570,6 +1700,7 @@ MissionData.Missions = {
     },
     ["Reclaiming the Torrent-spires"] = {
         name = "Reclaiming the Torrent-spires",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1582,6 +1713,7 @@ MissionData.Missions = {
     },
     ["Reclaiming the Vale-watch"] = {
         name = "Reclaiming the Vale-watch",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1594,6 +1726,7 @@ MissionData.Missions = {
     },
     ["Recovering the Past"] = {
         name = "Recovering the Past",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1606,6 +1739,7 @@ MissionData.Missions = {
     },
     ["Reforge the Future"] = {
         name = "Reforge the Future",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1618,6 +1752,7 @@ MissionData.Missions = {
     },
     ["Relics of the Goldencleft"] = {
         name = "Relics of the Goldencleft",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1630,6 +1765,7 @@ MissionData.Missions = {
     },
     ["Rescue at Gha Nêkha"] = {
         name = "Rescue at Gha Nêkha",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1642,6 +1778,7 @@ MissionData.Missions = {
     },
     ["Respite in Zarkul-sulûn"] = {
         name = "Respite in Zarkul-sulûn",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1654,6 +1791,7 @@ MissionData.Missions = {
     },
     ["Ritual of Sacrifice"] = {
         name = "Ritual of Sacrifice",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1666,6 +1804,7 @@ MissionData.Missions = {
     },
     ["Robbers on the Road"] = {
         name = "Robbers on the Road",
+        location = "Jiret-menêsh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1678,6 +1817,7 @@ MissionData.Missions = {
     },
     ["Routing Reinforcements"] = {
         name = "Routing Reinforcements",
+        location = "Ahâba",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1690,6 +1830,7 @@ MissionData.Missions = {
     },
     ["Scatha's Legacy"] = {
         name = "Scatha's Legacy",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1702,6 +1843,7 @@ MissionData.Missions = {
     },
     ["Scavengers of our Fallen"] = {
         name = "Scavengers of our Fallen",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1714,6 +1856,7 @@ MissionData.Missions = {
     },
     ["Secrets and Plans"] = {
         name = "Secrets and Plans",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "12 mobs, 3 plans. Must kill all mobs. Easy enough on t10. Can pull 1-2 mobs at time.",
@@ -1726,6 +1869,7 @@ MissionData.Missions = {
     },
     ["Secrets of the Frostdelf"] = {
         name = "Secrets of the Frostdelf",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1738,6 +1882,7 @@ MissionData.Missions = {
     },
     ["Securing Kûr Anzar"] = {
         name = "Securing Kûr Anzar",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1750,6 +1895,7 @@ MissionData.Missions = {
     },
     ["Securing Salvage"] = {
         name = "Securing Salvage",
+        location = "The Bloody Eagle Tavern",
         objectives = "Kill corsairs, collect boxes.",
         missionDescription = "Kill corsairs, collect boxes.",
         tacticalAdvice = "Run to the end, AoE mobs, collect boxes on way back to starting point, kill boss.",
@@ -1762,6 +1908,7 @@ MissionData.Missions = {
     },
     ["Securing the Redhorn"] = {
         name = "Securing the Redhorn",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1774,6 +1921,7 @@ MissionData.Missions = {
     },
     ["Servants of Throkhâr"] = {
         name = "Servants of Throkhâr",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1786,6 +1934,7 @@ MissionData.Missions = {
     },
     ["Shadows in the Greyflood"] = {
         name = "Shadows in the Greyflood",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Harder pulls, 4+ mobs. Pulling 1 sometimes makes 3 more appear. Tight spaces, so hard to move. 2-3 pulls, then talk to questgiver.",
@@ -1798,6 +1947,7 @@ MissionData.Missions = {
     },
     ["Ship of Wraiths"] = {
         name = "Ship of Wraiths",
+        location = "The Bloody Eagle Tavern",
         objectives = "Kill 16 undead corsairs, free 4 captives, kill boss",
         missionDescription = "Kill 16 undead corsairs, free 4 captives, kill boss",
         tacticalAdvice = "Group mobs and AoE down. Boss is near ship where you free woman. Head south-west, towards prow of ship.",
@@ -1810,6 +1960,7 @@ MissionData.Missions = {
     },
     ["Siege of Sírlond"] = {
         name = "Siege of Sírlond",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Must survive for ~7 mins, then find scout. Scout doesn't spawn until a certain number of mobs are killed. Insane number of mobs will aggro.",
@@ -1822,6 +1973,7 @@ MissionData.Missions = {
     },
     ["Siege of the Rift"] = {
         name = "Siege of the Rift",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1834,6 +1986,7 @@ MissionData.Missions = {
     },
     ["Siege-breaking"] = {
         name = "Siege-breaking",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Destroy catapults and towers. Can avoid some mobs. 1-2 mobs per pull. Pathers. Can be hard to move around, so can pull extra.",
@@ -1846,6 +1999,7 @@ MissionData.Missions = {
     },
     ["Sifting Through Time"] = {
         name = "Sifting Through Time",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill mobs, collect things. More mobs than necessary. Usually 1 mob per pull. Uruks (no summons on death on Variant B)",
@@ -1858,6 +2012,7 @@ MissionData.Missions = {
     },
     ["Signs and Sigils"] = {
         name = "Signs and Sigils",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill mobs, click banners. More mobs than needed.",
@@ -1870,6 +2025,7 @@ MissionData.Missions = {
     },
     ["Son of the Chieftain"] = {
         name = "Son of the Chieftain",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1882,6 +2038,7 @@ MissionData.Missions = {
     },
     ["Song of Rest"] = {
         name = "Song of Rest",
+        location = "Jiret-menêsh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1894,6 +2051,7 @@ MissionData.Missions = {
     },
     ["Standards of Khazad-dûm"] = {
         name = "Standards of Khazad-dûm",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1906,6 +2064,7 @@ MissionData.Missions = {
     },
     ["Stepping into the Drearspire"] = {
         name = "Stepping into the Drearspire",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1918,6 +2077,7 @@ MissionData.Missions = {
     },
     ["Steps of Caranost"] = {
         name = "Steps of Caranost",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Reach camp at top (camp is immediately right at top of stairs). Several pulls of ~5 mobs. Orcs sometimes drop down. Kill Ork Gates on way. Defilers can heal gates.",
@@ -1930,6 +2090,7 @@ MissionData.Missions = {
     },
     ["Sting like a Grodbog"] = {
         name = "Sting like a Grodbog",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1942,6 +2103,7 @@ MissionData.Missions = {
     },
     ["Stirring of Spirits"] = {
         name = "Stirring of Spirits",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Reach top of stairs and kill boss. Be careful when you go up initial stairs, mobs aggro on either side, so can pull too much.",
@@ -1954,6 +2116,7 @@ MissionData.Missions = {
     },
     ["Stomping Stûg-and-Zar"] = {
         name = "Stomping Stûg-and-Zar",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1966,6 +2129,7 @@ MissionData.Missions = {
     },
     ["Stop the Production"] = {
         name = "Stop the Production",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1978,6 +2142,7 @@ MissionData.Missions = {
     },
     ["Storm Swept"] = {
         name = "Storm Swept",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -1990,6 +2155,7 @@ MissionData.Missions = {
     },
     ["Succulent Soldiers"] = {
         name = "Succulent Soldiers",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2002,6 +2168,7 @@ MissionData.Missions = {
     },
     ["Svalfang's Stand"] = {
         name = "Svalfang's Stand",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Run straight, then left, up to top of hill and kill Svalfang and adds.",
@@ -2014,6 +2181,7 @@ MissionData.Missions = {
     },
     ["Terrible Turtle Trouble"] = {
         name = "Terrible Turtle Trouble",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Mostly solo pulls, boss and 2 mobs at end.",
@@ -2026,6 +2194,7 @@ MissionData.Missions = {
     },
     ["Tharbad Tower Ascent"] = {
         name = "Tharbad Tower Ascent",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Find and kill commander (he's upstairs in back on right). He's not the captain. Pulling commander pulls nearby group. Can just kill him and leave.",
@@ -2038,6 +2207,7 @@ MissionData.Missions = {
     },
     ["Tharbad Tower Courtyard"] = {
         name = "Tharbad Tower Courtyard",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Must kill everything in courtyard, including captain, before scout appears.",
@@ -2050,6 +2220,7 @@ MissionData.Missions = {
     },
     ["The Accursed Flame"] = {
         name = "The Accursed Flame",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill all mobs, including summoned mobs and boss, then click brazier. Brazier can't be clicked while in combat.",
@@ -2062,6 +2233,7 @@ MissionData.Missions = {
     },
     ["The Beast of Belfalas"] = {
         name = "The Beast of Belfalas",
+        location = "The Bloody Eagle Tavern",
         objectives = "Kill boss",
         missionDescription = "Kill boss",
         tacticalAdvice = "Ignore mobs, go straight to boss. Find nearby scout and leave immediately once boss is dead.",
@@ -2074,6 +2246,7 @@ MissionData.Missions = {
     },
     ["The Beast of Misthallow"] = {
         name = "The Beast of Misthallow",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2086,6 +2259,7 @@ MissionData.Missions = {
     },
     ["The Blood Spectre"] = {
         name = "The Blood Spectre",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2098,6 +2272,7 @@ MissionData.Missions = {
     },
     ["The Bloody Ritual"] = {
         name = "The Bloody Ritual",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2110,6 +2285,7 @@ MissionData.Missions = {
     },
     ["The Bloody Ruins"] = {
         name = "The Bloody Ruins",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2122,6 +2298,7 @@ MissionData.Missions = {
     },
     ["The Branches of Corruption"] = {
         name = "The Branches of Corruption",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2134,6 +2311,7 @@ MissionData.Missions = {
     },
     ["The Bridge to Caranost"] = {
         name = "The Bridge to Caranost",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill mobs and gates and get across bridge. You only need to reach the end of bridge, not kill mobs.",
@@ -2146,6 +2324,7 @@ MissionData.Missions = {
     },
     ["The Chieftain's Pack"] = {
         name = "The Chieftain's Pack",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2158,6 +2337,7 @@ MissionData.Missions = {
     },
     ["The Dead Keep Their Secrets"] = {
         name = "The Dead Keep Their Secrets",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2170,6 +2350,7 @@ MissionData.Missions = {
     },
     ["The Den of Worms"] = {
         name = "The Den of Worms",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2182,6 +2363,7 @@ MissionData.Missions = {
     },
     ["The Flames of Resistance"] = {
         name = "The Flames of Resistance",
+        location = "Jiret-menêsh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2194,6 +2376,7 @@ MissionData.Missions = {
     },
     ["The Flooded Depths"] = {
         name = "The Flooded Depths",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2206,6 +2389,7 @@ MissionData.Missions = {
     },
     ["The Flow of Water"] = {
         name = "The Flow of Water",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2218,6 +2402,7 @@ MissionData.Missions = {
     },
     ["The Fluttering Fires"] = {
         name = "The Fluttering Fires",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Clunky",
@@ -2230,6 +2415,7 @@ MissionData.Missions = {
     },
     ["The Foregone Trap"] = {
         name = "The Foregone Trap",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "X",
@@ -2242,6 +2428,7 @@ MissionData.Missions = {
     },
     ["The Gate Captain"] = {
         name = "The Gate Captain",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2254,6 +2441,7 @@ MissionData.Missions = {
     },
     ["The Goblins for Gorgar"] = {
         name = "The Goblins for Gorgar",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2266,6 +2454,7 @@ MissionData.Missions = {
     },
     ["The Goblin-town Gauntlet"] = {
         name = "The Goblin-town Gauntlet",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2278,6 +2467,7 @@ MissionData.Missions = {
     },
     ["The Good Bacon"] = {
         name = "The Good Bacon",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2290,6 +2480,7 @@ MissionData.Missions = {
     },
     ["The Great Goblin's Treasure"] = {
         name = "The Great Goblin's Treasure",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2302,6 +2493,7 @@ MissionData.Missions = {
     },
     ["The Hand of Gorgar"] = {
         name = "The Hand of Gorgar",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2314,6 +2506,7 @@ MissionData.Missions = {
     },
     ["The Hand, Out!"] = {
         name = "The Hand, Out!",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Pathers come towards you at start (possible to pull a set and then have pathers). Mostly pulls of 2 mobs, one of 3. Kill all mobs.",
@@ -2326,6 +2519,7 @@ MissionData.Missions = {
     },
     ["The Heart of Kidzul-kâlah"] = {
         name = "The Heart of Kidzul-kâlah",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2338,6 +2532,7 @@ MissionData.Missions = {
     },
     ["The High Dig"] = {
         name = "The High Dig",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2350,6 +2545,7 @@ MissionData.Missions = {
     },
     ["The Hunting Grounds"] = {
         name = "The Hunting Grounds",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2362,6 +2558,7 @@ MissionData.Missions = {
     },
     ["The Ill-fated Cave"] = {
         name = "The Ill-fated Cave",
+        location = "The Bloody Eagle Tavern",
         objectives = "Clear 12 rockfalls, free 8 trapped dwarves",
         missionDescription = "Clear 12 rockfalls, free 8 trapped dwarves",
         tacticalAdvice = "Non-combat. Ignore gredbyg. Use delete key to find next clickables.",
@@ -2374,6 +2571,7 @@ MissionData.Missions = {
     },
     ["The Jaws of Death"] = {
         name = "The Jaws of Death",
+        location = "Clégur",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Help/burn victims (only click them once or it will bug). You have to fight wargs to get to many, but 2-3 per pull.",
@@ -2386,6 +2584,7 @@ MissionData.Missions = {
     },
     ["The Last Embers of Nûrz Ghâshu"] = {
         name = "The Last Embers of Nûrz Ghâshu",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2398,6 +2597,7 @@ MissionData.Missions = {
     },
     ["The Lost Vault"] = {
         name = "The Lost Vault",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Puzzle",
@@ -2410,6 +2610,7 @@ MissionData.Missions = {
     },
     ["The Matron of the Hatchery"] = {
         name = "The Matron of the Hatchery",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2422,6 +2623,7 @@ MissionData.Missions = {
     },
     ["The Matron of the High Pass"] = {
         name = "The Matron of the High Pass",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2434,6 +2636,7 @@ MissionData.Missions = {
     },
     ["The Matron of the Keep"] = {
         name = "The Matron of the Keep",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2446,6 +2649,7 @@ MissionData.Missions = {
     },
     ["The Matron's Fang"] = {
         name = "The Matron's Fang",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2458,6 +2662,7 @@ MissionData.Missions = {
     },
     ["The Menace of Sutwarden"] = {
         name = "The Menace of Sutwarden",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill 15 mobs, burn 8 banners. Best to run through to pick up all mobs and AoE down, then burn banners after. Once done, face a wave of mobs at entrance and down below. Then return to summong horn to end.",
@@ -2470,6 +2675,7 @@ MissionData.Missions = {
     },
     ["The Missing Treasure"] = {
         name = "The Missing Treasure",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2482,6 +2688,7 @@ MissionData.Missions = {
     },
     ["The Nettinglade"] = {
         name = "The Nettinglade",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Single mob pulls, can avoid centre mobs, cocoons can spawn dwarves or orcs.",
@@ -2494,6 +2701,7 @@ MissionData.Missions = {
     },
     ["The Riches of Sundergrót"] = {
         name = "The Riches of Sundergrót",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2506,6 +2714,7 @@ MissionData.Missions = {
     },
     ["The Roots of Decay"] = {
         name = "The Roots of Decay",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2518,6 +2727,7 @@ MissionData.Missions = {
     },
     ["The Ruins of Amon Firn"] = {
         name = "The Ruins of Amon Firn",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Need to kill half-orc captain only. He's on far east, down from mountain (can be upstairs or downstairs, possibly other locations). Can avoid many mobs if careful. Lots of mobs around. Difficulty and length depend on how succesful you are at avoiding mobs.",
@@ -2530,6 +2740,7 @@ MissionData.Missions = {
     },
     ["The Ruins of Gaervarad"] = {
         name = "The Ruins of Gaervarad",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Kill 15 mobs. More mobs than necessary. 4 upstairs. 1-4 mobs per pull. Some pathing.",
@@ -2542,6 +2753,7 @@ MissionData.Missions = {
     },
     ["The Sacrificial Tower"] = {
         name = "The Sacrificial Tower",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2554,6 +2766,7 @@ MissionData.Missions = {
     },
     ["The Shadow of Valdhellir"] = {
         name = "The Shadow of Valdhellir",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2566,6 +2779,7 @@ MissionData.Missions = {
     },
     ["The Snows of Kêr Bréin"] = {
         name = "The Snows of Kêr Bréin",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2578,6 +2792,7 @@ MissionData.Missions = {
     },
     ["The Sorceress of Tûr Ágal"] = {
         name = "The Sorceress of Tûr Ágal",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2590,6 +2805,7 @@ MissionData.Missions = {
     },
     ["The Sweetest Reward"] = {
         name = "The Sweetest Reward",
+        location = "Kighân Zajâna",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2602,6 +2818,7 @@ MissionData.Missions = {
     },
     ["The Taurogrim Alliance"] = {
         name = "The Taurogrim Alliance",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2614,6 +2831,7 @@ MissionData.Missions = {
     },
     ["The Tearful Tomb"] = {
         name = "The Tearful Tomb",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Defeat Blogmal gang-leader. He's at bottom (stairs on right). Can avoid most mobs on Variant A, but need 3-4 pulls on Variant B.",
@@ -2626,6 +2844,7 @@ MissionData.Missions = {
     },
     ["The Three Wardens"] = {
         name = "The Three Wardens",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2638,6 +2857,7 @@ MissionData.Missions = {
     },
     ["The Throne of Tharrazhâr"] = {
         name = "The Throne of Tharrazhâr",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2650,6 +2870,7 @@ MissionData.Missions = {
     },
     ["The Tombs of Gond Orchal"] = {
         name = "The Tombs of Gond Orchal",
+        location = "Gerwyn Convoy (Andrath)",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "All solo pulls, very spread apart, easy to do as a result.",
@@ -2662,6 +2883,7 @@ MissionData.Missions = {
     },
     ["The Trestlebridge Ambush"] = {
         name = "The Trestlebridge Ambush",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Aggressive Skirmish-like mission, where you can pull lots of mobs and AoE. Must reclaim several locations.",
@@ -2674,6 +2896,7 @@ MissionData.Missions = {
     },
     ["The Vale-watch Rescue"] = {
         name = "The Vale-watch Rescue",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2686,6 +2909,7 @@ MissionData.Missions = {
     },
     ["The Waggons of War"] = {
         name = "The Waggons of War",
+        location = "Iridír",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2698,6 +2922,7 @@ MissionData.Missions = {
     },
     ["The Watchers of Iron"] = {
         name = "The Watchers of Iron",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2710,6 +2935,7 @@ MissionData.Missions = {
     },
     ["The Worm Hatchery"] = {
         name = "The Worm Hatchery",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2722,6 +2948,7 @@ MissionData.Missions = {
     },
     ["Thieves of Antiquity"] = {
         name = "Thieves of Antiquity",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2734,6 +2961,7 @@ MissionData.Missions = {
     },
     ["Training For Glory"] = {
         name = "Training For Glory",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2746,6 +2974,7 @@ MissionData.Missions = {
     },
     ["Treasure for the Taking"] = {
         name = "Treasure for the Taking",
+        location = "Ahâba",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2758,6 +2987,7 @@ MissionData.Missions = {
     },
     ["Trinkets of the Lost Garrison"] = {
         name = "Trinkets of the Lost Garrison",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2770,6 +3000,7 @@ MissionData.Missions = {
     },
     ["Trouble at the High Crag"] = {
         name = "Trouble at the High Crag",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2782,6 +3013,7 @@ MissionData.Missions = {
     },
     ["Trouble in the Armoury"] = {
         name = "Trouble in the Armoury",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2794,6 +3026,7 @@ MissionData.Missions = {
     },
     ["Trouble on the Brandywine"] = {
         name = "Trouble on the Brandywine",
+        location = "Trestlebridge",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Timed defensive mission, where you have to wait between waves. No way to speed this up.",
@@ -2806,6 +3039,7 @@ MissionData.Missions = {
     },
     ["Troubled Waters"] = {
         name = "Troubled Waters",
+        location = "Herne",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "~5-6 pulls, 3-4 mobs, pathers. Hard to see puddles on ground. Hard to move around. Boss spawns 3 mobs.",
@@ -2818,6 +3052,7 @@ MissionData.Missions = {
     },
     ["Two Heads are Deadlier"] = {
         name = "Two Heads are Deadlier",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2830,6 +3065,7 @@ MissionData.Missions = {
     },
     ["Uncovered Treasures"] = {
         name = "Uncovered Treasures",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2842,6 +3078,7 @@ MissionData.Missions = {
     },
     ["Under Command of Trolls"] = {
         name = "Under Command of Trolls",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "Large distance",
@@ -2854,6 +3091,7 @@ MissionData.Missions = {
     },
     ["Unwelcome Guests"] = {
         name = "Unwelcome Guests",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2866,6 +3104,7 @@ MissionData.Missions = {
     },
     ["Vanished in Zahûmakh"] = {
         name = "Vanished in Zahûmakh",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2878,6 +3117,7 @@ MissionData.Missions = {
     },
     ["Vestiges of Lâkindar"] = {
         name = "Vestiges of Lâkindar",
+        location = "Jiret-menêsh",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2890,6 +3130,7 @@ MissionData.Missions = {
     },
     ["Wall of Ice"] = {
         name = "Wall of Ice",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2902,6 +3143,7 @@ MissionData.Missions = {
     },
     ["Watch-towers at the Goblin-gate"] = {
         name = "Watch-towers at the Goblin-gate",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2914,6 +3156,7 @@ MissionData.Missions = {
     },
     ["Well-fed in Wyrmsgráf"] = {
         name = "Well-fed in Wyrmsgráf",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2926,6 +3169,7 @@ MissionData.Missions = {
     },
     ["Wings Over Grálinvarth"] = {
         name = "Wings Over Grálinvarth",
+        location = "",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2938,6 +3182,7 @@ MissionData.Missions = {
     },
     ["Wonder of the Deep"] = {
         name = "Wonder of the Deep",
+        location = "Hall of Vernozal",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2950,6 +3195,7 @@ MissionData.Missions = {
     },
     ["Wrath of the Frost-heart"] = {
         name = "Wrath of the Frost-heart",
+        location = "Erebor",
         objectives = "",
         missionDescription = "",
         tacticalAdvice = "",
@@ -2976,4 +3222,13 @@ function MissionData:GetMissionCount()
         count = count + 1
     end
     return count
+end
+
+function MissionData:GetAllMissionNames()
+    local names = {}
+    for missionName in pairs(self.Missions) do
+        table.insert(names, missionName)
+    end
+    table.sort(names)
+    return names
 end
