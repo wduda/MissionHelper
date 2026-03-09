@@ -2,8 +2,9 @@
 
 ## workflow
 
-for every new task I provide, go into plan mode, prepare a plan without executing, start a new branch based on main, checkout that branch, commit the plan into an .md file in the `plans` folder, named with the date in ISO 8601 format and an abbreviated description of the feature
-if the plan is updated based on my fedback make sure to patch the .md file for the plan as well
+for every new task I provide, go into plan mode, start a new branch based on main, checkout that branch, prepare a plan without executing, commit the plan into an .md file in the `plans` folder, named with the date in ISO 8601 format and an abbreviated description of the feature, wait for me to confirm or refine the plan before executing it
+if the plan is refined based on my fedback make sure to patch the .md file for the plan as well
+when executing the plan, only stage changes, so I can test and refine plan and implementatioon before commit and push - only do commit and push when I ask ask for it
 
 ## skills
 
